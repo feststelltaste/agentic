@@ -1,0 +1,83 @@
+# Thresholds and weights for code-fitness-map.
+#
+# This file is a DECISION, not a measurement. The levels are our own weighted sum of smells per file
+# (three categories) with our own thresholds.
+#
+# Provenance of every number:
+#   [own]   our decision; the starting values are common practice and not verified against any vendor default
+#   [proxy] our stand-in for a smell that has no agreed numeric definition (Brain Method, Brain Class)
+#
+# score(file) = sum over smells of  min(count * weight, cap)
+# level       = unfit if score >= levels.unfit, strained if score >= levels.strained, else fit
+
+detect:
+  complex_method:
+    cyclomatic: 9            # [own] function_cyclomatic_complexity_warning
+    alert_cyclomatic: 100    # [own] function_cyclomatic_complexity_alert
+  large_method:
+    lines: 70                # [own] function_lines_of_code_warning (code lines, not counting blank and comment lines)
+    alert_lines: 500         # [own] function_lines_of_code_alert
+    # anonymous functions are not counted: lizard reports module wrappers (e.g. in JavaScript) as functions
+  nested_complexity:
+    depth: 4                 # [own] function_nesting_depth_warning (an else block counts as a level, see SKILL.md)
+  excess_arguments:
+    max: 4                   # [own] function_max_arguments (more than this is a smell)
+  large_file:
+    lines: 1000              # [own] file_lines_of_code_for_warning
+    alert_lines: 5000        # [own] file_lines_of_code_for_alert
+  overall_complexity:
+    mean_cyclomatic: 4       # [own] file_mean_cyclomatic_complexity_warning
+  duplication:               # functions with a structurally similar sibling in the same file
+    min_lines: 10            # [own] function_duplication_min_lines_of_code_for_check
+    similarity: 0.85         # [own] structural token similarity; tuned on brace languages, less reliable elsewhere
+  brain_method:              # [proxy] lines of code + cyclomatic complexity + deep nesting + many arguments, no agreed numbers.
+    note: "complex AND large AND deeply nested AND more arguments than allowed, using the [own] thresholds above"
+  brain_class:               # [proxy] large module, many functions, at least one Brain Method, no agreed numbers.
+    min_lines: 500           # [own]
+    min_functions: 20        # [own]
+  developer_congestion:
+    authors: 5               # [own] distinct authors (identities merged through .mailmap) changing the file in the window
+  former_contributors:
+    lookback_months: 36      # [own] a smelly file counts when none of the authors of this period is still active
+    active_authors_file: ""  # one canonical e-mail or name per line, ONLY active people; empty = not measured (missing)
+
+history:
+  window_months: 12          # [own] window for change days, authors and congestion, ending at the last change to the sources
+  ignore_commits_over_files: 100   # [own] a filter, not a criterion: mass changes (formatting, renames) are left out
+
+smells:                      # [own] all weights and caps
+  brain_class:          {weight: 2, cap: 2}
+  brain_method:         {weight: 4, cap: 8}   # per function
+  complex_method:       {weight: 1, cap: 3}   # per function; the alert threshold is reported, it does not weigh more
+  large_method:         {weight: 1, cap: 2}   # per function
+  nested_complexity:    {weight: 1, cap: 2}   # per function
+  excess_arguments:     {weight: 1, cap: 1}   # per function
+  large_file:           {weight: 1, cap: 1}
+  overall_complexity:   {weight: 1, cap: 1}
+  duplication:          {weight: 0.5, cap: 0.5}   # [own] low on purpose: the duplication proxy is weak
+  developer_congestion: {weight: 2, cap: 2}
+  former_contributors:  {weight: 3, cap: 3}
+
+levels:
+  strained: 2.5               # [own] check against the distribution on your codebase
+  unfit: 7                     # [own] check against the distribution on your codebase
+
+not_measured:                # smells known from the literature that this script cannot measure; written into every report
+  - {smell: Bumpy Road Ahead, why: "no reliable counting rule found; the nesting depth carries most of the signal"}
+  - {smell: Complex Conditional, why: "not implemented"}
+  - {smell: Low Cohesion, why: "LCOM4 needs a parser with data-member access"}
+  - {smell: Primitive Obsession, why: "no reliable proxy"}
+  - {smell: Large/Duplicated Assertion Blocks, why: "test code is out of scope for this version"}
+
+scope:
+  languages: auto            # auto = every language the script knows (see EXT in fitness.py); or a list such as [java, typescript]
+  exclude:                   # regular expressions on repo-relative paths
+    - '(^|/)(target|build|dist|out|vendor|node_modules|\.venv|venv|__pycache__)/'
+    - '(^|/)(src/test|tests?|__tests__)/'
+    - '(^|/)generated'
+    - '/gen/'
+    - '\.min\.js$'
+  source_roots:              # regular expressions: where the source tree starts; the first match wins, folders below it form the units
+    - 'src/main/[^/]+/'      # Maven / Gradle layout (java, kotlin, scala, ...)
+    - 'src/'
+  unit_depth: 1              # aggregation: folders below the common prefix of each source root; other files: their folder

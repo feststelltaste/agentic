@@ -17,6 +17,7 @@ Skills are prompt files that Claude Code loads as slash commands. Drop them into
 
 | Skill | Description |
 |-------|-------------|
+| [code-fitness-map](skills/code-fitness-map/) | Rates every source file of a codebase (Java, JavaScript, TypeScript, Python, C#, Go and more) fit (blue), strained (violet) or unfit (red) by code fitness, oriented at ideas of Adam Tornhill. Measures smells (Complex/Large Method, Nested Complexity, Excess Arguments, Duplication, Brain Method/Class, Developer Congestion) with lizard and Git, weighted in a readable `weights.yaml`. Outputs a CSV, a summary, and a zoomable bubble chart that shows "unhealthy and changing" code. Deterministic, no LLM. |
 | [git-repo-trust-audit](skills/git-repo-trust-audit/) | Audits a repository's git history to judge how far it can be trusted as ground truth: author identity consistency, commit message quality, history rewrites, squash-merge granularity, and message/diff correspondence. Gives a verdict per dimension plus an overall recommendation before you lean on `git log`/`blame` for "who" and "why" questions. |
 | [java-symbolic-renaming](skills/java-symbolic-renaming/) | Rename or improve a Java identifier using symbolic tools (LSP, Serena, OpenRewrite, ast-grep). Handles risk classification, alternative name proposals, and safe execution. |
 | [mikado-graph](skills/mikado-graph/) | Plan and track complex refactorings using the Mikado Method. Produces a dependency graph (DOT/SVG) that shows what to do first and surfaces non-obvious coupling. |

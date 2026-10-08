@@ -1,0 +1,152 @@
+<title>Code Fitness Bubbles</title>
+<style>
+  :root { --bg:#fafaf8; --fg:#1d1f23; --muted:#6b7078; --line:#d9dbe0; --panel:#fff;
+          --unfit:#d1495b; --strained:#8f6fc4; --fit:#3f7fcf; --none:#c9ccd1; --d0:#f0f1f3; --d1:#e3e5e9; --d2:#d6d9de; --d3:#c9cdd3; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg:#16181c; --fg:#e7e9ec; --muted:#9aa0a8; --line:#33373d; --panel:#1f2227;
+            --unfit:#e0687a; --strained:#a98be0; --fit:#6fa6ee; --none:#4a4f57; --d0:#23262b; --d1:#2a2e34; --d2:#32363d; --d3:#3a3f47; color-scheme:dark; } }
+  :root[data-theme="dark"] { --bg:#16181c; --fg:#e7e9ec; --muted:#9aa0a8; --line:#33373d; --panel:#1f2227;
+            --unfit:#e0687a; --strained:#a98be0; --fit:#6fa6ee; --none:#4a4f57; --d0:#23262b; --d1:#2a2e34; --d2:#32363d; --d3:#3a3f47; color-scheme:dark; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.4 system-ui, sans-serif; }
+  header { padding:14px 16px 8px; min-width:0; display:flex; flex-wrap:wrap; gap:12px 20px; align-items:center; }
+  h1 { font-size:18px; margin:0 12px 0 0; }
+  label { color:var(--muted); font-size:13px; }
+  select { font:inherit; padding:4px 6px; background:var(--panel); color:var(--fg); border:1px solid var(--line); border-radius:6px; }
+  .legend { display:flex; gap:14px; flex-wrap:wrap; font-size:13px; }
+  .legend span { display:inline-flex; align-items:center; gap:6px; }
+  .sw { width:12px; height:12px; border-radius:50%; display:inline-block; }
+  #crumbs { padding:0 16px 8px; font-size:13px; color:var(--muted); }
+  #crumbs a { color:var(--fg); cursor:pointer; text-decoration:underline; }
+  #chart { margin:0 16px 16px; border:1px solid var(--line); border-radius:8px; background:var(--panel); overflow:hidden; display:flex; justify-content:center; }
+  svg { display:block; cursor:pointer; }
+  circle.dir { stroke:var(--line); stroke-width:1; }
+  circle.leaf { stroke:var(--bg); stroke-width:.5; }
+  circle.dir:hover, circle.leaf:hover { stroke:var(--fg); stroke-width:1.5; }
+  text.label { font-size:12px; text-anchor:middle; fill:var(--fg); pointer-events:none; paint-order:stroke; stroke:var(--panel); stroke-width:3px; stroke-linejoin:round; }
+  #tip { position:fixed; pointer-events:none; background:var(--panel); border:1px solid var(--line); border-radius:6px;
+         padding:8px 10px; font-size:12px; max-width:380px; box-shadow:0 2px 10px rgba(0,0,0,.18); display:none; z-index:5; }
+  #tip b { display:block; word-break:break-all; margin-bottom:4px; }
+  #tip .z { display:inline-block; padding:0 6px; border-radius:8px; color:#111; font-size:11px; margin:1px 3px 1px 0; }
+  .hint { padding:0 16px 14px; color:var(--muted); font-size:12px; }
+</style>
+<header>
+  <h1>Code Fitness Bubbles</h1>
+  <label>Size <select id="size"><option value="loc">Lines (LOC)</option><option value="n">File count</option></select></label>
+  <label>Colour <select id="mode"><option value="fitness">Fitness (heuristic)</option><option value="change">Change days in window</option><option value="risk">Unfit and changing</option></select></label>
+  <div class="legend" id="legend"></div>
+</header>
+<div id="crumbs"></div>
+<div id="chart"></div>
+<div class="hint">Hierarchical bubbles: a folder is a circle around its files and subfolders. Click a bubble to zoom in, click the background or the breadcrumb to go back. Fitness = smell score against the weights in weights.yaml, our own heuristic. "Unfit and changing" shows red and yellow files by how often they changed in the window; fit files stay grey. Hover shows the smells. Layout after the zoomable circle packing of the Code-Hotspot-Analyse (feststelltaste). As of: __META__</div>
+<div id="tip"></div>
+__D3TAG__
+<script>
+const DATA = __DATA__;   // files: [path, loc, level, score, smells[], changeDays, authors]
+const COLORS = {unfit:'var(--unfit)', strained:'var(--strained)', fit:'var(--fit)'};
+const NAMES = {unfit:'Unfit', strained:'Strained', fit:'Fit'};
+const maxDays = Math.max(1, ...DATA.files.map(f => f[5]));
+const heat = d3.scaleSequential(d3.interpolateYlOrRd).domain([0, maxDays]);
+
+function build() {
+  const root = {name:'', children:[], path:''};
+  for (const [path, loc, level, score, smells, days, authors] of DATA.files) {
+    let n = root; const parts = path.split('/');
+    parts.forEach((p, i) => {
+      let c = n.children.find(x => x.name === p);
+      if (!c) { c = {name:p, path: parts.slice(0,i+1).join('/')}; if (i < parts.length-1) c.children = []; n.children.push(c); }
+      n = c;
+    });
+    Object.assign(n, {loc, level, score, smells, days, authors});
+  }
+  return root;
+}
+function compress(n) {
+  while (n.children && n.children.length === 1 && n.children[0].children) {
+    const c = n.children[0]; n.name = n.name ? n.name + '/' + c.name : c.name; n.path = c.path; n.children = c.children;
+  }
+  (n.children || []).forEach(compress); return n;
+}
+const tree = compress(build());
+
+function fillOf(d, mode) {
+  if (d.children) return `var(--d${Math.min(3, d.depth)})`;
+  const x = d.data;
+  if (mode === 'fitness') return COLORS[x.level];
+  if (mode === 'change') return heat(x.days);
+  return x.level === 'fit' ? 'var(--none)' : heat(x.days);
+}
+
+const wrap = document.getElementById('chart');
+let root, focus, view, circles, labels, svg, size;
+function render() {
+  const sizeBy = d3.select('#size').property('value');
+  size = Math.max(480, Math.min(wrap.clientWidth, window.innerHeight - 190));
+  root = d3.hierarchy(tree, d => d.children)
+      .sum(d => d.children ? 0 : (sizeBy === 'n' ? 1 : Math.max(1, d.loc)))
+      .sort((a, b) => b.value - a.value);
+  d3.pack().size([size, size]).padding(3)(root);
+  focus = root;
+  wrap.innerHTML = '';
+  svg = d3.select(wrap).append('svg').attr('width', size).attr('height', size)
+      .attr('viewBox', `-${size / 2} -${size / 2} ${size} ${size}`)
+      .on('click', () => zoom(root));
+  const nodes = root.descendants().slice(1);
+  circles = svg.append('g').selectAll('circle').data(nodes).join('circle')
+      .attr('class', d => d.children ? 'dir' : 'leaf')
+      .on('click', (e, d) => { if (focus !== d) { zoom(d); e.stopPropagation(); } })
+      .on('mousemove', (e, d) => tip(e, d)).on('mouseleave', () => document.getElementById('tip').style.display = 'none');
+  labels = svg.append('g').selectAll('text').data(nodes).join('text').attr('class', 'label').text(d => d.data.name.replace(/\.[^./]+$/, ''));
+  colour(); zoomTo([root.x, root.y, root.r * 2]); showLabels(); legend(); crumbs();
+}
+function colour() { const mode = d3.select('#mode').property('value'); circles.attr('fill', d => fillOf(d, mode)); legend(); }
+function zoomTo(v) {
+  view = v; const k = size / v[2];
+  circles.attr('transform', d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`).attr('r', d => d.r * k);
+  labels.attr('transform', d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
+}
+function showLabels() {
+  const k = size / (focus.r * 2);
+  labels.style('display', d => d.parent === focus && d.r * k > 14 ? 'inline' : 'none')
+        .style('font-size', d => `${Math.max(9, Math.min(14, d.r * k / 4))}px`);
+}
+function zoom(d) {
+  focus = d;
+  labels.style('display', 'none');
+  svg.transition().duration(650).tween('zoom', () => {
+    const i = d3.interpolateZoom(view, [d.x, d.y, d.r * 2]);
+    return t => zoomTo(i(t));
+  }).on('end', showLabels);
+  crumbs(); legend();
+}
+function legend() {
+  const mode = d3.select('#mode').property('value'), sizeBy = d3.select('#size').property('value');
+  const sums = {unfit:0, strained:0, fit:0};
+  focus.leaves().forEach(l => sums[l.data.level] += sizeBy === 'n' ? 1 : l.data.loc);
+  const tot = d3.sum(Object.values(sums)) || 1, unit = sizeBy === 'n' ? 'files' : 'LOC';
+  d3.select('#legend').html(mode === 'fitness'
+    ? Object.keys(sums).map(z => `<span><i class="sw" style="background:${COLORS[z]}"></i>${NAMES[z]} ${d3.format(',')(sums[z])} ${unit} (${Math.round(100 * sums[z] / tot)} %)</span>`).join('')
+    : `<span><i class="sw" style="background:${heat(0)}"></i>0</span><span><i class="sw" style="background:${heat(maxDays)}"></i>${maxDays} change days</span>`);
+}
+function crumbs() {
+  const trail = focus.ancestors().reverse();
+  d3.select('#crumbs').html(trail.map((n, i) => i === trail.length - 1 ? `<b>${n.data.name || 'Repo'}</b>` : `<a data-i="${i}">${n.data.name || 'Repo'}</a>`).join(' / '))
+    .selectAll('a').on('click', function () { zoom(trail[+this.dataset.i]); });
+}
+function tip(e, d) {
+  const t = document.getElementById('tip'), x = d.data;
+  if (d.children) {
+    const lv = d.leaves(), by = {unfit:0, strained:0, fit:0}; lv.forEach(l => by[l.data.level] += l.data.loc);
+    const tot = d3.sum(Object.values(by)) || 1;
+    t.innerHTML = `<b>${x.path || 'Repo'}</b>${lv.length} files · ${d3.format(',')(tot)} LOC<br>` +
+      Object.keys(by).map(z => `<span class="z" style="background:${COLORS[z]}">${NAMES[z]} ${Math.round(100 * by[z] / tot)} %</span>`).join('');
+  } else {
+    t.innerHTML = `<b>${x.path}</b>${x.loc} LOC · <span class="z" style="background:${COLORS[x.level]}">${NAMES[x.level]}</span> score ${x.score}<br>` +
+      `${x.days} change days · ${x.authors} authors in the window<br>` +
+      (x.smells.length ? x.smells.map(s => '· ' + s).join('<br>') : '<em>no smells found</em>');
+  }
+  t.style.display = 'block'; t.style.left = Math.min(e.clientX + 14, innerWidth - 400) + 'px'; t.style.top = (e.clientY + 14) + 'px';
+}
+d3.select('#size').on('change', render); d3.select('#mode').on('change', colour);
+addEventListener('resize', render); render();
+</script>
