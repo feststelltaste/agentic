@@ -247,7 +247,7 @@ def url_links(texts, mappings, edges, cfg, report, declared=frozenset()):
         return
     from_xml = {p for p in patterns if p not in declared}
     rx = rx_slash = None
-    if from_xml:                                          # web.xml: `ListStudy`, with or without the slash
+    if from_xml:                                          # web.xml: `ListOrders`, with or without the slash
         alt = "|".join(re.escape(p) for p in sorted(from_xml, key=len, reverse=True))
         rx = re.compile(rf"""["'(/=]({alt})(?=[?"'&)#\s;]|$)""")
     if declared & set(patterns):                          # declared in code: used with the slash
@@ -265,7 +265,7 @@ def url_links(texts, mappings, edges, cfg, report, declared=frozenset()):
         for p, (line, n) in hits.items():
             found.setdefault(p, []).append((f, line, n))
     for p, uses in found.items():
-        if GENERIC.fullmatch(p) and len(uses) > c["max_generic_sources"]:   # `study`, `form`, `login`: an ordinary word, not a link
+        if GENERIC.fullmatch(p) and len(uses) > c["max_generic_sources"]:   # `customer`, `form`, `login`: an ordinary word, not a link
             report["generic_urls"].append((p, len(uses)))
             continue
         for f, line, n in uses:
@@ -505,7 +505,7 @@ def file_names(texts, edges, cfg, report):
                 narrowed = [x for x in targets if x == tail or x.endswith("/" + tail)]
                 if narrowed:
                     targets, via_path = narrowed, True
-            if len(targets) > 1:                              # still several (web and ws): keep the nearest one to the source
+            if len(targets) > 1:                              # still several (for example two modules): keep the nearest one to the source
                 best = max(shared_depth(f, x) for x in targets)
                 targets = [x for x in targets if shared_depth(f, x) == best]
             same_name = len(by_base[base])

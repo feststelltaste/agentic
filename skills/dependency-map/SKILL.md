@@ -109,7 +109,7 @@ dependencies.md    edges per kind, examples, most depended-on targets, where nam
 - Where several apps live in one repository (a library with example apps), a URL declared in one can be matched by a test of another: `url-link` is a lead.
 - A name is matched as text, not by meaning. `name-link` can connect two things that merely share a name.
 - Ticket numbers cover only the commits that carry one (45% here); a pair below the thresholds, or a file with few revisions, is not judged.
-- "Explained" has strengths: a table such as `study` that hundreds of classes use links almost anything, so an explanation through a table or a shared dependency is weak; the report counts direct and indirect explanations apart.
+- "Explained" has strengths: a table such as `customer` that hundreds of classes use links almost anything, so an explanation through a table or a shared dependency is weak; the report counts direct and indirect explanations apart.
 - A computed name is flagged, not resolved. `prefix-class` covers only the case where the package is spelled out in the same file.
 - Seed data and changelogs in the repository are scanned; the live data of a database is not, so identifiers stored only at run time stay invisible.
 - Generated or vendored files add noise unless they are excluded: check `scope.exclude` in the override file.

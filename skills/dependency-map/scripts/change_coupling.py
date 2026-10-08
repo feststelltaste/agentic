@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Change coupling after Adam Tornhill: files that change in the same commits, and in the same tickets, compared with what is already known.
+"""Change coupling, oriented at ideas of Adam Tornhill: files that change in the same commits, and in the same tickets, compared with what is already known.
 
 For every pair of files with enough shared changesets it computes the degree of coupling = shared / ((revisions_a + revisions_b) / 2), once per
 commit and once per ticket (the union of the files of all commits that carry the ticket number), and then asks the question this skill exists for:
@@ -67,7 +67,7 @@ def changesets(repo, files, cc):
 
 
 def coupling(sets, cc):
-    """-> {(a, b): (shared, degree in percent)} over the changesets, by code-maat's definition."""
+    """-> {(a, b): (shared, degree in percent)} over the changesets: shared / the average number of changesets of the two files."""
     revs, pairs = collections.Counter(), collections.Counter()
     for fs in sets.values():
         fs = sorted(fs)
@@ -313,7 +313,7 @@ def main():
     hid = [r for r in rows if r["hidden"] == "yes"]
     L = ["# Change coupling and hidden dependencies\n",
          f"Generated {dt.datetime.now().replace(microsecond=0).isoformat()} · commit `{git(repo, 'rev-parse', '--short', 'HEAD').strip()}` · {len(files)} files in scope\n",
-         "> Tornhill's change coupling: files that change in the same commits or the same tickets. **Degree** = shared / ((revisions of a + revisions of b) / 2). "
+         "> Change coupling: files that change in the same commits or the same tickets. **Degree** = shared / ((revisions of a + revisions of b) / 2). "
          "A pair is **hidden** when no known dependency connects the two files: not the code graph or wiring within " + str(cc["known_max_steps"]) + " steps, not a URL or a shared name, "
          "not a shared table, and the two do not even depend on a common file. Coupling is evidence from history, never a proof: the same ticket, release, person or chance can explain it.\n",
          "## What the history offers\n",
@@ -332,7 +332,7 @@ def main():
         none = k.get("none: hidden", 0)
         L += ["", f"**By strength of the explanation:** direct {strong} ({100 * strong / n:.0f} %: a code or use edge in one step, a URL, key or name, a table both use), "
               f"indirect {n - strong - none} ({100 * (n - strong - none) / n:.0f} %: two steps, a table reached through code, or only a shared dependency, weaker "
-              f"because a hub such as the table `study` links almost anything), none {none} ({100 * none / n:.0f} %)."]
+              f"because a hub such as the table `customer` links almost anything), none {none} ({100 * none / n:.0f} %)."]
         L += ["", f"**{len(hid)} of {n} coupled pairs have no known dependency and share no dependency either** (`siblings` are pairs without a path between them that depend on a common file: the same structure, often a copy that evolved in parallel). By file types of the pair, and across modules:\n", "| Types | Hidden pairs | Across modules |", "|---|---:|---:|"]
         by_type = collections.Counter(r["types"] for r in hid)
         for t, c in by_type.most_common(8):
