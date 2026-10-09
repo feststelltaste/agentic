@@ -33,7 +33,7 @@ Modern software rarely needs to be rewritten — it needs to be understood and t
 
 Skills are prompt files with scripts and reference material. They are not active in this repo: an agent started in the repo root does not load them.
 
-- **Try them:** start your agent in `test/`. `test/.claude/skills` links to `../../skills`, so only that folder sees them.
+- **Try them:** start your agent in `test/`. `test/.agents/skills` and `test/.claude/skills` link to `../../skills`, so only that folder sees them.
 - **Install one:** link or copy its folder into your agent's skills directory, e.g. `ln -s "$PWD/skills/repo-story" ~/.claude/skills/repo-story`. A link keeps it in sync with the repo.
 
 **How the skills are built**
