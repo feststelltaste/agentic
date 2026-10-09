@@ -3,7 +3,7 @@
 The slides (`references/slides.md`) come with an accompanying text. Template and rules from the PhotoCraft post.
 
 ## How to post
-1. "Start a post", at the bottom the **document icon** (possibly under "More"), upload the slides PDF (`slides-kurz` for the first post, `slides-lang` as a follow-up post).
+1. "Start a post", at the bottom the **document icon** (possibly under "More"), upload the slides PDF (`<project>-slides-short` for the first post, `<project>-slides-long` as a follow-up post).
 2. Set the **document title** (the title of the first slide).
 3. Paste the text and post. **Put links in the first comment**, not in the main text: posts with external links in the text are often shown to fewer people. In the text, write "links in the first comment".
 

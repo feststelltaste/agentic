@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de"><head><meta charset="utf-8"><title>Ein Editor, den auch Agenten bedienen</title>
+<html lang="de"><head><meta charset="utf-8"><title>@@TITLE@@</title>
 <style>
 /*@@THEME@@*/
 @page{size:1080px 1350px;margin:0}
@@ -10,7 +10,7 @@ body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--screen-b
   padding:92px 88px 110px;display:flex;flex-direction:column}
 @media screen{.slide{margin:24px auto;box-shadow:0 2px 18px rgba(0,0,0,.12)}}
 .slide::after{content:attr(data-n) " / " attr(data-t);position:absolute;right:88px;bottom:44px;font-size:22px;color:var(--faint);letter-spacing:.04em}
-.slide::before{content:"PhotoCraft · Entstehungsgeschichte";position:absolute;left:88px;bottom:44px;font-size:22px;color:var(--faint);letter-spacing:.04em}
+.slide::before{content:"@@PROJECT@@ · @@KICKER@@";position:absolute;left:88px;bottom:44px;font-size:22px;color:var(--faint);letter-spacing:.04em}
 .dark{background:var(--brand);color:#fff}
 .dark::after,.dark::before{color:var(--brand-25)}
 .cover::after,.cover::before{display:none}
@@ -49,6 +49,7 @@ li::before{content:"";position:absolute;left:0;top:.62em;width:22px;height:6px;b
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:44px}
 .pair span{display:block;font-size:24px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--brand);margin-bottom:10px}
 .pair img{width:100%;display:block;border:2px solid var(--line)}
+.cover .lede{margin-bottom:32px}
 .cover img{width:100%;display:block;margin-top:auto;margin-bottom:-30px;box-shadow:0 18px 50px rgba(0,0,0,.4)}
 .rows{margin-top:48px;border-top:2px solid var(--line)}
 .rows div{display:grid;grid-template-columns:1fr 70px 1fr;align-items:center;padding:24px 0;border-bottom:2px solid var(--line);font-size:38px;line-height:1.3}
@@ -61,65 +62,64 @@ li::before{content:"";position:absolute;left:0;top:.62em;width:22px;height:6px;b
 .foot{margin-top:auto;font-size:25px;line-height:1.45;color:var(--brand-25)}
 </style></head><body>
 
+<!-- Orientierung, kein Formular. Das sind Bausteine mit Rhythmus (hell/dunkel), Schriftgrößen und Layouts, die auf dem Handy funktionieren.
+     Reihenfolge, Anzahl und Layout sind frei; eine Aussage pro Folie. Alle Texte und Zahlen hier sind Muster: durch eigene Messwerte ersetzen. -->
+
 <section class="slide dark cover" data-n="1" data-t="6">
-  <div class="kicker">Entstehungsgeschichte</div>
-  <h1>Ein Editor, den auch Agenten bedienen</h1>
-  <p class="lede">Ein Photoshop-Nachbau in neun Tagen. Was das Git-Log erzählt, und was wir gemessen haben, als wir alle 510 Commits neu gebaut haben.</p>
-  <img src="{{IMG:photocraft-demo.jpg}}" alt="PhotoCraft mit Hokusais Große Welle">
+  <div class="kicker">Projektname · Thema</div>
+  <h1>Die eine Idee der ganzen Geschichte</h1>
+  <p class="lede">Projektname ist [was es ist, Art des Projekts] (github.com/org/projekt). Ein bis zwei Sätze dazu, was die Leser aus dieser Geschichte mitnehmen.</p>
+  <img src="{{IMG:cover.jpg}}" alt="Bildschirmfoto oder Bild des Projekts">
 </section>
 
 <section class="slide" data-n="2" data-t="6">
   <div class="kicker">Die Kurzfassung</div>
-  <h2>Keine Geschichte über Tempo. Eine über Design.</h2>
+  <h2>Der wichtigste Befund als Satz</h2>
   <div class="stats">
-    <div><strong>516</strong><span>Commits in 9 Tagen, 307 mit einem Claude-Modell als Co-Autor</span></div>
-    <div><strong>0</strong><span>von 510 neu gebauten Commits haben den Compiler gebrochen</span></div>
-    <div><strong>817</strong><span>Befehle: eine Liste hinter Menü, Kommandozeile und Agenten</span></div>
-    <div><strong>3.974</strong><span>Tests am Ende, am ersten Tag waren es 971</span></div>
+    <div><strong>42</strong><span>was die Zahl zählt, in einem halben Satz</span></div>
+    <div><strong>1,234</strong><span>eine zweite gemessene Zahl</span></div>
+    <div><strong>7</strong><span>eine dritte</span></div>
+    <div><strong>98%</strong><span>eine vierte</span></div>
   </div>
-  <p>Alles ist für Agenten bedienbar, und um sie liegt ein Netz aus Prüfungen.</p>
+  <p>Ein Satz dazu, wie gemessen wurde: <b>was neu gebaut oder getestet wurde</b>, und wo.</p>
 </section>
 
 <section class="slide" data-n="3" data-t="6">
-  <div class="kicker">Breite ist nicht Treue</div>
-  <h2>100 % des Menüs. Dann der Vorbehalt.</h2>
-  <div class="quote" style="margin-top:36px">„parity estimate reflects 100% menu breadth (depth/fidelity remain)“<small>Sechzehn Sekunden nach „625/625“ · 3. Okt, 02:56</small></div>
-  <div class="chart">{{CHART:fidelity-de}}</div>
-  <div class="cap">Von 258 Photoshop-Dateien trifft jeder Stand so viele innerhalb von 2/255 an Photoshops eigenem Bild. Commit 193 bringt +54 durch Textkanten im Gamma-Raum. Davor: <b>Grau 120 statt 125</b>, unsichtbar.</div>
+  <div class="kicker">Diagramm und Zitat</div>
+  <h2>Eine Behauptung, dann die Nachprüfung</h2>
+  <div class="quote" style="margin-top:36px">“Ein Satz, zitiert aus einer Commit-Nachricht oder den Docs”<small>Quelle · Datum, Uhrzeit</small></div>
+  <div class="chart">{{CHART:chart-1-de}}</div>
+  <div class="cap">Was das Diagramm zeigt und worauf man achten soll. Sagen, wie die Zahl <b>ohne</b> den Effekt aussähe.</div>
 </section>
 
 <section class="slide dark" data-n="4" data-t="6">
   <div class="kicker">Das Muster</div>
-  <h2>Jede Panne wurde zur Prüfung, nicht zur Warnung</h2>
+  <h2>Was sich wiederholt, als Satz</h2>
   <div class="rows" style="border-color:rgba(255,255,255,.22)">
-    <div style="border-color:rgba(255,255,255,.22)">Ein 4-TB-Absturz<i>→</i><em>ein Fuzz-Test</em></div>
-    <div style="border-color:rgba(255,255,255,.22)">„Sieht richtig aus“<i>→</i><em>ein Pixel-Orakel</em></div>
-    <div style="border-color:rgba(255,255,255,.22)">Rote Formatierung<i>→</i><em>ein CI-Schritt</em></div>
-    <div style="border-color:rgba(255,255,255,.22)">Gebrochene Schichten<i>→</i><em>ein Build-Fehler</em></div>
-    <div style="border-color:rgba(255,255,255,.22)">Dateizugriff für Agenten<i>→</i><em>eine Freigabeliste</em></div>
+    <div style="border-color:rgba(255,255,255,.22)">Ein Missgeschick<i>→</i><em>eine Prüfung</em></div>
+    <div style="border-color:rgba(255,255,255,.22)">Noch ein Missgeschick<i>→</i><em>noch eine Prüfung</em></div>
+    <div style="border-color:rgba(255,255,255,.22)">Ein drittes<i>→</i><em>ein drittes</em></div>
   </div>
-  <p class="lede" style="font-size:36px;margin-top:30px">Agenten dürfen schnell sein, kommen aber nicht weit, ohne dass etwas anschlägt.</p>
+  <p class="lede" style="font-size:36px;margin-top:30px">Ein Satz, der die Lehre benennt.</p>
 </section>
 
 <section class="slide" data-n="5" data-t="6">
   <div class="kicker">Was wir mitnehmen</div>
-  <h2>Fünf Fragen für das eigene Produkt</h2>
+  <h2>Fragen für das eigene Projekt</h2>
   <ol class="q" style="padding:0;list-style:none">
-    <li>Kann ein Agent <b>alles tun, was ein Mensch</b> in der Oberfläche tut?</li>
-    <li>Ist unsere Oberfläche ein <b>dünner Client</b> über dieser Schicht?</li>
-    <li>Kann ein Agent unser System <b>wahrnehmen</b>, oder muss er raten?</li>
-    <li>Wie <b>sichern wir seinen Zugang</b> ab?</li>
-    <li>Haben wir eine <b>Abnahme</b>, die Abläufe mit Agenten durchspielt?</li>
+    <li>Eine Frage, die Leser für <b>ihr eigenes Projekt</b> beantworten können?</li>
+    <li>Eine zweite Frage, das Schlüsselwort fett?</li>
+    <li>Eine dritte Frage?</li>
   </ol>
 </section>
 
 <section class="slide dark" data-n="6" data-t="6">
-  <div class="kicker">Mehr lesen</div>
-  <h2>Neun Tage, 516 Commits</h2>
-  <p class="lede">Der ganze Artikel zeigt die Messungen: jeder Commit neu gebaut, 20 Schlüsselcommits getestet, alte Stände gegen 258 Photoshop-Dateien gelaufen. Ehrlicher Stand: 133 von 258 Dateien innerhalb der Toleranz, früher Alpha-Stand.</p>
+  <div class="kicker">Weiterlesen</div>
+  <h2>Titel des Artikels</h2>
+  <p class="lede">Was der ganze Artikel ergänzt: die Messungen, die Methode, die offenen Punkte.</p>
   <div class="foot">
-    <b>Basis.</b> Git-Log, AGENTS.md, docs/ und Scorecard von storytold/photocraft, Stand 8. Oktober 2026, dazu eigene Nachmessungen in einem abgeschotteten Container. Absichten der Autoren sind unsere Deutung.<br><br>
-    Messungen und Text: Claude Opus 5.5 · Oktober 2026
+    <b>Basis.</b> Quellen (Git-Log, Docs, Tests), Stand und wie wir gemessen haben. Absichten der Autoren sind unsere Deutung.<br><br>
+    Messungen und Text: [wer] · [Monat Jahr]
   </div>
 </section>
 </body></html>

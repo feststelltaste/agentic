@@ -16,14 +16,14 @@ Turn a project's Git history into three things: **measured facts** (does the sto
 ## Workflow in steps 0 to 8
 Details: `references/method.md`. Commands and pitfalls per language: `references/ecosystems.md`. Keep the order, above all step 0.
 
-0. **Safety first.** Third-party code only in the container: builds run scripts, plugins and dependency code. Template `assets/devcontainer/` (Dockerfile per ecosystem). Do not mount the original, disable push, no credentials, commit nothing, never silently re-resolve dependencies.
+0. **Safety first.** Third-party code only in the container: builds run scripts, plugins and dependency code. Template `assets/devcontainer/` (Dockerfile per ecosystem: Rust, Java, Node, Go, Python); `replay.sh` and `bisect-metric.sh` refuse to run outside a container. Do not mount the original, disable push, no credentials, commit nothing, never silently re-resolve dependencies.
 1. **Replay.** `ECOSYSTEM=<eco> scripts/replay.sh <clone> <results>`: check out and build every first-parent commit, status in CSV, resumable.
 2. **Plausibility.** Verify short "ok" times with a cold sample, second pass with tests, format/lint, read numbers from commit messages per commit and re-measure them.
 3. **Read third-party code.** `scripts/review-build-scripts.sh <clone> <eco>`: read all historical build scripts/configurations before running them.
 4. **Deepen key commits.** 15 to 20 states with tests and project-specific metrics. Verify SHAs via `git log --grep`.
 5. **Find jumps.** `scripts/bisect-metric.sh`. If there is an oracle (reference output), measure old states against it.
 6. **Write.** `references/storytelling.md`; build and print with `scripts/print-pdf.sh`, template in `assets/`.
-7. **Slides** (on request, after the articles, same numbers): `references/slides.md`; templates `assets/slides/slides-lang.src.html` (long, 12 slides) and `assets/slides/slides-kurz.src.html` (short, 6 slides; German variants: `slides-lang-de` and `slides-kurz-de`); the `-de` variants are the German-language versions of the same templates; format 1080x1350.
+7. **Slides** (on request, after the articles, same numbers): `references/slides.md`; templates `assets/slides/slides-long.src.html` (long, 12 slides) and `assets/slides/slides-short.src.html` (short, 6 slides; German variants: `slides-long-de` and `slides-short-de`); the `-de` variants are the German-language versions of the same templates; format 1080x1350.
 8. **Social-media post** for article and slides (on request): `references/social-post.md` (guide, text template, rules). Never post it yourself.
 
 ## Hard rules
@@ -35,7 +35,7 @@ Details: `references/method.md`. Commands and pitfalls per language: `references
 - **README and docs may lag behind.** That is material, not a measurement error.
 
 ## Storing results
-`results/` next to the clone: `results.csv`, `logs/`, `variant-b.csv`, `scripts/` (with README: what ran as a script, what by hand), `report.md`, `cases.md`, one folder per article with `*.src.html`, `build.py`, PDF; slides in `slides/` (`slides-lang.pdf`, `slides-kurz.pdf`, with `-de` for German). Use descriptive file names (`<project>-story.pdf`, `<project>-measurement.pdf`).
+`results/` next to the clone: `results.csv`, `logs/`, `variant-b.csv`, `scripts/` (with README: what ran as a script, what by hand), `report.md`, `cases.md`, one folder per article with `*.src.html`, `build.py`, PDF; slides in `slides/`. File names start with the **repo name** and give type, variant and language (`<repo>-article-en.pdf`, `<repo>-measurement-de.pdf`, `<repo>-slides-lang-en.pdf`, `<repo>-slides-kurz-de.pdf`), never a bare `article.pdf` or `slides.pdf`, so a loose file is unambiguous outside its folder. `print-pdf.sh` takes the name from `<name>.src.html`: name the source this way from the start.
 
 ## Building an article (short guide)
 1. Create a folder, copy `assets/build.py` and `assets/article-template.src.html` into it, rename the template to `<name>.src.html`, replace the `@@...@@` placeholders (`@@TITLE@@`, `@@AUTHOR@@`, `@@DATE@@`, `@@PROJECT@@`, `@@KICKER@@`). **Design:** choose a theme (`default`, `forest`, `plum`, `ocean`, `graphite` or your own via `scripts/make-theme.py`), see `references/themes.md`.

@@ -71,7 +71,7 @@ def main(name):
     src = re.sub(r"\{\{IMG:([^}]+)\}\}", img, src)
     cp = HERE / "charts.py"
     if cp.exists():
-        spec = importlib.util.spec_from_file_location("charts", cp); m = importlib.util.module_from_spec(spec); m.THEME = THEME; spec.loader.exec_module(m)
+        spec = importlib.util.spec_from_file_location("charts", cp); m = importlib.util.module_from_spec(spec); m.THEME = THEME; m.line_chart = line_chart; spec.loader.exec_module(m)
         for k, fn in m.CHARTS.items():
             src = src.replace("{{CHART:%s}}" % k, fn())
     out = HERE / f"{name}.html"

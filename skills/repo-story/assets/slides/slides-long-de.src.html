@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de"><head><meta charset="utf-8"><title>Ein Editor, den auch Agenten bedienen</title>
+<html lang="de"><head><meta charset="utf-8"><title>@@TITLE@@</title>
 <style>
 /*@@THEME@@*/
 @page{size:1080px 1350px;margin:0}
@@ -10,7 +10,7 @@ body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--screen-b
   padding:92px 88px 110px;display:flex;flex-direction:column}
 @media screen{.slide{margin:24px auto;box-shadow:0 2px 18px rgba(0,0,0,.12)}}
 .slide::after{content:attr(data-n) " / " attr(data-t);position:absolute;right:88px;bottom:44px;font-size:22px;color:var(--faint);letter-spacing:.04em}
-.slide::before{content:"PhotoCraft · Entstehungsgeschichte";position:absolute;left:88px;bottom:44px;font-size:22px;color:var(--faint);letter-spacing:.04em}
+.slide::before{content:"@@PROJECT@@ · @@KICKER@@";position:absolute;left:88px;bottom:44px;font-size:22px;color:var(--faint);letter-spacing:.04em}
 .dark{background:var(--brand);color:#fff}
 .dark::after,.dark::before{color:var(--brand-25)}
 .cover::after,.cover::before{display:none}
@@ -49,6 +49,7 @@ li::before{content:"";position:absolute;left:0;top:.62em;width:22px;height:6px;b
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:44px}
 .pair span{display:block;font-size:24px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--brand);margin-bottom:10px}
 .pair img{width:100%;display:block;border:2px solid var(--line)}
+.cover .lede{margin-bottom:32px}
 .cover img{width:100%;display:block;margin-top:auto;margin-bottom:-30px;box-shadow:0 18px 50px rgba(0,0,0,.4)}
 .rows{margin-top:48px;border-top:2px solid var(--line)}
 .rows div{display:grid;grid-template-columns:1fr 70px 1fr;align-items:center;padding:24px 0;border-bottom:2px solid var(--line);font-size:38px;line-height:1.3}
@@ -61,141 +62,138 @@ li::before{content:"";position:absolute;left:0;top:.62em;width:22px;height:6px;b
 .foot{margin-top:auto;font-size:25px;line-height:1.45;color:var(--brand-25)}
 </style></head><body>
 
+<!-- Orientierung, kein Formular. Das sind Bausteine mit Rhythmus (hell/dunkel), Schriftgrößen und Layouts, die auf dem Handy funktionieren.
+     Reihenfolge, Anzahl und Layout sind frei; eine Aussage pro Folie. Alle Texte und Zahlen hier sind Muster: durch eigene Messwerte ersetzen. -->
+
 <section class="slide dark cover" data-n="1" data-t="12">
-  <div class="kicker">Entstehungsgeschichte</div>
-  <h1>Ein Editor, den auch Agenten bedienen</h1>
-  <p class="lede">Wie ein Photoshop-Nachbau in neun Tagen entstand: in welcher Reihenfolge, nach welchen Regeln, und was die Entwickler jedes Mal taten, wenn etwas schiefging.</p>
-  <img src="{{IMG:photocraft-demo.jpg}}" alt="PhotoCraft mit Hokusais Große Welle">
+  <div class="kicker">Projektname · Thema</div>
+  <h1>Die eine Idee der ganzen Geschichte</h1>
+  <p class="lede">Projektname ist [was es ist, Art des Projekts] (github.com/org/projekt). Ein bis zwei Sätze dazu, was die Leser aus dieser Geschichte mitnehmen.</p>
+  <img src="{{IMG:cover.jpg}}" alt="Bildschirmfoto oder Bild des Projekts">
 </section>
 
 <section class="slide" data-n="2" data-t="12">
   <div class="kicker">Die Kurzfassung</div>
-  <h2>Keine Geschichte über Tempo. Eine über Design.</h2>
+  <h2>Der wichtigste Befund als Satz</h2>
   <div class="stats">
-    <div><strong>9</strong><span>Tage vom leeren Repo bis zu einem Bildeditor im Photoshop-Stil, in Rust</span></div>
-    <div><strong>516</strong><span>Commits, 307 mit einem Claude-Modell als Co-Autor</span></div>
-    <div><strong>817</strong><span>Befehle, dieselben für Menü, Kommandozeile und Agenten</span></div>
-    <div><strong>3.974</strong><span>Tests am Ende, am ersten Tag waren es 971</span></div>
+    <div><strong>42</strong><span>was die Zahl zählt, in einem halben Satz</span></div>
+    <div><strong>1,234</strong><span>eine zweite gemessene Zahl</span></div>
+    <div><strong>7</strong><span>eine dritte</span></div>
+    <div><strong>98%</strong><span>eine vierte</span></div>
   </div>
-  <p>Wir haben <b>alle 510 Commits</b> des Hauptpfads in einem abgeschotteten Container neu gebaut. Keiner hat den Compiler gebrochen.</p>
+  <p>Ein Satz dazu, wie gemessen wurde: <b>was neu gebaut oder getestet wurde</b>, und wo.</p>
 </section>
 
 <section class="slide" data-n="3" data-t="12">
-  <div class="kicker">Akt 1 · Gerüst</div>
-  <h2>Stunde drei: 42.241 Zeilen und eine Entscheidung</h2>
-  <p>Commit Nr. 2, „one-shot“: Ebenen, Masken, Compositor, PSD-Leser, 971 Tests, bei unserem Bau alle grün.</p>
-  <div class="box"><h3>Vier Entscheidungen, die alles tragen</h3>
+  <div class="kicker">Akt 1 · Thema</div>
+  <h2>Eine Überschrift mit Zeitpunkt oder Zahl</h2>
+  <p>Zwei Sätze: was geschah, was gemessen wurde.</p>
+  <div class="box"><h3>Entscheidungen, die alles tragen</h3>
     <ul>
-      <li><b>Eine Liste ist die Schnittstelle.</b> Jede Aktion ist ein Befehl in einer Registry.</li>
-      <li><b>Die Oberfläche ist ein dünner Client</b> auf dieser Registry.</li>
-      <li><b>Der Agent bekommt Wahrnehmung:</b> das Dokument als JSON, Screenshots als Bild.</li>
-      <li><b>Ab Tag 2 eingebaut:</b> ein JSON-Server ohne Fenster und ein MCP-Server.</li>
+      <li><b>Eine Entscheidung.</b> Ihre Folge in einem halben Satz.</li>
+      <li><b>Noch eine Entscheidung.</b> Warum sie zählt.</li>
+      <li><b>Eine dritte.</b> Was sie ermöglichte.</li>
     </ul></div>
-  <p class="muted" style="font-size:31px">Ein Werkzeug prüft die Schichtenregeln ab Stunde eins. Der Build erzwingt, was Agenten ungern nachlesen.</p>
 </section>
 
 <section class="slide" data-n="4" data-t="12">
-  <div class="kicker">Akt 2 · Breite</div>
-  <h2>Alles, aber flach</h2>
-  <p>Ein Zähler prüft, wie viele von Photoshops 625 Menüpunkten einen lebenden Befehl haben. Die letzten 16 kommen in 33 Minuten.</p>
-  <div class="chart">{{CHART:parity-de}}</div>
-  <div class="cap">Menüpunkte mit lebendem Befehl, nach Merge-Zeit. 1. bis 3. Oktober.</div>
-  <div class="quote">„parity estimate reflects 100% menu breadth (depth/fidelity remain)“<small>Nächster Commit, sechzehn Sekunden nach „625/625“ · 3. Okt, 02:56</small></div>
+  <div class="kicker">Akt 2 · Thema</div>
+  <h2>Überschrift</h2>
+  <p>Die Behauptung oder der Zähler, den das Diagramm prüft.</p>
+  <div class="chart">{{CHART:chart-1-de}}</div>
+  <div class="cap">Was das Diagramm zeigt. Zeitraum.</div>
+  <div class="quote">“Ein Zitat aus einer Commit-Nachricht oder den Docs”<small>Quelle · Datum, Uhrzeit</small></div>
 </section>
 
 <section class="slide" data-n="5" data-t="12">
-  <div class="kicker">Akt 3 · Robustheit</div>
-  <h2>Nie wieder abstürzen</h2>
-  <p><b>Regel 9</b> kommt in die AGENTS.md: Keine Eingabe darf einen Befehl abstürzen lassen. Vierzehn Minuten später ruft ein Fuzz-Test jeden Befehl mit feindlichen Parametern auf.</p>
+  <div class="kicker">Akt 3 · Thema</div>
+  <h2>Überschrift</h2>
+  <p>Eine <b>Regel</b> oder ein Ereignis, und was daraus folgte.</p>
   <div class="stats" style="grid-template-columns:1fr 1fr;margin-bottom:20px">
-    <div><strong>2.085</strong><span>normale Tests: alle grün</span></div>
-    <div><strong>4 TB</strong><span>Speicher fordert der Fuzz-Test an, wenn man eine Auswahl weit aus dem Bild schiebt</span></div>
+    <div><strong>2,085</strong><span>was normal ist</span></div>
+    <div><strong>1</strong><span>was die Prüfung fand, was sonst nichts fand</span></div>
   </div>
-  <p>Kein normaler Test hätte das gefunden. Acht Stunden später: <b>„Found by the panic_hunt fuzz.“</b> Danach wurde die Regel zur Compiler-Konfiguration, und der Agentenzugang bekam Token und freigegebene Verzeichnisse.</p>
+  <p>Was sich danach änderte.</p>
 </section>
 
 <section class="slide" data-n="6" data-t="12">
-  <div class="kicker">Akt 4 · Treue</div>
-  <h2>Stimmt es wirklich? Frag Photoshop.</h2>
-  <p>258 Testdateien, mit Photoshop-Skripten erzeugt, jeweils mit Photoshops eigenem Bild. PhotoCraft rendert, ein Programm vergleicht Pixel. Bestanden: höchstens 2/255 Abweichung.</p>
-  <div class="chart">{{CHART:fidelity-de}}</div>
-  <div class="cap">Dateien innerhalb der Toleranz, alte Stände gegen heutige Dateien. Ein Commit: +54.</div>
-  <p style="margin-top:24px">Der Fehler war unsichtbar: <b>Grau 120 statt 125</b> an Buchstabenrändern. Nur ein Orakel, das Pixel zählt, sieht das.</p>
+  <div class="kicker">Akt 4 · Thema</div>
+  <h2>Überschrift: woher wissen wir das?</h2>
+  <p>Das Orakel oder die Referenz, gegen die gemessen wird, und das Bestehenskriterium.</p>
+  <div class="chart">{{CHART:chart-2-de}}</div>
+  <div class="cap">Was das Diagramm zeigt. Ein Sprung und seine Ursache.</div>
+  <p style="margin-top:24px">Was ohne das Orakel unsichtbar war: <b>die Zahl, auf die es ankommt</b>.</p>
 </section>
 
 <section class="slide" data-n="7" data-t="12">
-  <div class="kicker">Akt 5 · Community</div>
-  <h2>Die Tür geht auf</h2>
+  <div class="kicker">Akt 5 · Thema</div>
+  <h2>Überschrift</h2>
   <ul style="margin-top:34px">
-    <li><b>5. Okt:</b> acht PRs von sechs Personen in zwei Minuten gemergt, dann ein Reparatur-Commit des Maintainers.</li>
-    <li><b>7. Okt:</b> 187 Commits von 42 Beitragenden an einem Tag.</li>
+    <li><b>Datum:</b> was geschah, mit einer Zahl.</li>
+    <li><b>Datum:</b> was danach geschah.</li>
   </ul>
   <div class="pair">
-    <div><span>Vorher · Nr. 136</span><img src="{{IMG:../snapshot/fall-community-batch/136-layer-menu.png}}" alt="Menü vorher"></div>
-    <div><span>Nachher · Nr. 137</span><img src="{{IMG:../snapshot/fall-community-batch/137-layer-menu.png}}" alt="Menü nachher"></div>
+    <div><span>Vorher</span><img src="{{IMG:before.png}}" alt="Vorher"></div>
+    <div><span>Nachher</span><img src="{{IMG:after.png}}" alt="Nachher"></div>
   </div>
-  <div class="cap">Das Menü „Layer“ verdeckt die Menüleiste nicht mehr. Beide Bilder ohne Bildschirm gerendert, mit demselben JSON-Klick.</div>
+  <div class="cap">Was die Leser in den beiden Bildern sehen sollen.</div>
 </section>
 
 <section class="slide" data-n="8" data-t="12">
-  <div class="kicker">Die Gebrauchsanweisung für Agenten</div>
-  <h2>AGENTS.md: Mechanik statt Wünsche</h2>
+  <div class="kicker">Die Gebrauchsanweisung</div>
+  <h2>AGENTS.md oder Ähnliches: was wirklich drinsteht</h2>
   <ul>
-    <li><b>Erst die ehrliche Lage lesen.</b> Die Parity-Untergrenze darf nur steigen, nie sinken.</li>
-    <li><b>Eine feste Abschlussliste:</b> Tests, Clippy, Schichten, WASM, Fuzz, Corpus.</li>
-    <li><b>Ein Protokoll für abgebrochene Sitzungen.</b> Der nächste Agent macht weiter.</li>
-    <li><b>Parallele Agenten:</b> eigenes Build-Verzeichnis, neue Befehle in neuen Modulen, fremde Baustellen nicht reparieren.</li>
+    <li><b>Eine Regel.</b> Ihre Mechanik, nicht ihr Wunsch.</li>
+    <li><b>Noch eine Regel.</b> Was sie verhindert.</li>
+    <li><b>Eine dritte Regel.</b> Wer sie durchsetzt: ein Werkzeug oder ein Mensch.</li>
   </ul>
-  <div class="box accent" style="margin-top:20px"><h3>Compiler als Wächter</h3>
-    <p style="margin:0 0 14px;font-size:33px">Die Dateiformat-Bibliothek kompiliert nicht mehr, wenn das Dokumentmodell ein Feld bekommt. Beim Speichern geht nichts still verloren.</p></div>
+  <div class="box accent"><h3>Eine Sicherung, die zeigenswert ist</h3>
+    <p style="margin:0 0 14px;font-size:35px">Ein Satz dazu, wie Build oder Compiler es erzwingen.</p></div>
 </section>
 
 <section class="slide dark" data-n="9" data-t="12">
   <div class="kicker">Das Muster</div>
-  <h2>Jede Panne wurde zur Prüfung, nicht zur Warnung</h2>
+  <h2>Was sich wiederholt, als Satz</h2>
   <div class="rows" style="border-color:rgba(255,255,255,.22)">
-    <div style="border-color:rgba(255,255,255,.22)">Ein Absturz<i>→</i><em>ein Fuzz-Test</em></div>
-    <div style="border-color:rgba(255,255,255,.22)">„Sieht richtig aus“<i>→</i><em>ein Pixel-Orakel</em></div>
-    <div style="border-color:rgba(255,255,255,.22)">Rote Formatierung<i>→</i><em>ein CI-Schritt</em></div>
-    <div style="border-color:rgba(255,255,255,.22)">Gebrochene Schichten<i>→</i><em>ein Build-Fehler</em></div>
-    <div style="border-color:rgba(255,255,255,.22)">Dateizugriff für Agenten<i>→</i><em>eine Freigabeliste</em></div>
+    <div style="border-color:rgba(255,255,255,.22)">Ein Missgeschick<i>→</i><em>eine Prüfung</em></div>
+    <div style="border-color:rgba(255,255,255,.22)">Noch ein Missgeschick<i>→</i><em>noch eine Prüfung</em></div>
+    <div style="border-color:rgba(255,255,255,.22)">Ein drittes<i>→</i><em>ein drittes</em></div>
   </div>
-  <p class="lede" style="font-size:36px;margin-top:30px">Agenten dürfen schnell sein, kommen aber nicht weit, ohne dass etwas anschlägt. Wo eine Prüfung fehlte, zeigte sich das: Die Community-Tests kompilierten nicht, solange niemand sie kompilierte.</p>
+  <p class="lede" style="font-size:36px;margin-top:30px">Ein Satz, der die Lehre benennt.</p>
 </section>
 
 <section class="slide" data-n="10" data-t="12">
   <div class="kicker">Ehrlicher Stand</div>
   <h2>Was noch offen ist</h2>
   <div class="stats">
-    <div><strong>133</strong><span>von 258 Photoshop-Dateien innerhalb der Toleranz. Anpassungsebenen und Ebenenstile fehlen noch.</span></div>
-    <div><strong>10</strong><span>Agenten-Abläufe per MCP abgenommen, Ziel sind 30 bis 50</span></div>
+    <div><strong>42</strong><span>von 100 im Soll. Was noch abweicht.</span></div>
+    <div><strong>7</strong><span>eine zweite offene Zahl und ihr Ziel</span></div>
   </div>
   <ul style="margin-top:56px">
-    <li>Die README nennt „1.700 Tests, 500+ Befehle“. Gemessen: <b>3.974 und 817</b>.</li>
-    <li>Ob die Bedienung <b>für Agenten wirklich gut ist</b>, ist nicht gemessen.</li>
-    <li>Wir sehen Commits, keine Gespräche. Absichten sind Deutung.</li>
+    <li>Wo README oder Docs hinter der Messung zurückliegen: <b>behauptet gegen gemessen</b>.</li>
+    <li>Was <b>nicht gemessen</b> wurde.</li>
+    <li>Wir sehen Commits, keine Gespräche. Absichten sind unsere Deutung.</li>
   </ul>
 </section>
 
 <section class="slide" data-n="11" data-t="12">
   <div class="kicker">Was wir mitnehmen</div>
-  <h2>Fünf Fragen für das eigene Produkt</h2>
+  <h2>Fragen für das eigene Projekt</h2>
   <ol class="q" style="padding:0;list-style:none">
-    <li>Gibt es eine Schicht, über die ein Agent <b>alles tun kann, was ein Mensch</b> in der Oberfläche tut?</li>
-    <li>Ist unsere Oberfläche ein <b>dünner Client</b> darüber?</li>
-    <li>Kann ein Agent unser System <b>wahrnehmen</b>, mit Zustand und Bild, oder muss er raten?</li>
-    <li>Wie <b>sichern wir seinen Zugang</b> ab?</li>
-    <li>Haben wir eine <b>Abnahme</b>, die Abläufe mit Agenten wirklich durchspielt?</li>
+    <li>Eine Frage, die Leser für <b>ihr eigenes Projekt</b> beantworten können?</li>
+    <li>Eine zweite Frage, das Schlüsselwort fett?</li>
+    <li>Eine dritte Frage?</li>
+    <li>Eine vierte Frage?</li>
   </ol>
 </section>
 
 <section class="slide dark" data-n="12" data-t="12">
-  <div class="kicker">Mehr lesen</div>
-  <h2>Neun Tage, 516 Commits</h2>
-  <p class="lede">Der ganze Artikel zeigt die Messungen: jeder Commit neu gebaut, 20 Schlüsselcommits getestet, alte Stände gegen 258 Photoshop-Dateien gelaufen.</p>
+  <div class="kicker">Weiterlesen</div>
+  <h2>Titel des Artikels</h2>
+  <p class="lede">Was der ganze Artikel ergänzt: die Messungen, die Methode, die offenen Punkte.</p>
   <div class="foot">
-    <b>Basis.</b> Git-Log, AGENTS.md, docs/ und Scorecard des Open-Source-Projekts storytold/photocraft, Stand 8. Oktober 2026, dazu eigene Nachmessungen in einem abgeschotteten Container. Die Entscheidungen und ihre Reihenfolge sind belegt; dass die Autoren „agent-first“ als Methode verfolgten, ist unsere Deutung.<br><br>
-    Messungen und Text: Claude Opus 5.5 · Oktober 2026
+    <b>Basis.</b> Quellen (Git-Log, Docs, Tests), Stand und wie wir gemessen haben. Absichten der Autoren sind unsere Deutung.<br><br>
+    Messungen und Text: [wer] · [Monat Jahr]
   </div>
 </section>
 </body></html>
