@@ -1,0 +1,14 @@
+{
+  "name": "repo-story (isolated)",
+  "build": { "dockerfile": "Dockerfile.@@ECOSYSTEM@@" },
+  "remoteUser": "vscode",
+  // The working folder (with clone ./repo and ./results) is the only mounted host folder. The original is NOT mounted.
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/story,type=bind",
+  "workspaceFolder": "/workspaces/story/repo",
+  "mounts": [
+    // Dependency cache as a named volume so that it belongs to user vscode (otherwise permission errors on the first run)
+    "source=archaeology-cache,target=/cache,type=volume"
+  ],
+  "runArgs": ["--cap-drop=ALL", "--security-opt=no-new-privileges", "--pids-limit=4096"],
+  "containerEnv": { "CARGO_HOME": "/cache/cargo", "CARGO_TARGET_DIR": "/cache/target", "MAVEN_OPTS": "-Dmaven.repo.local=/cache/m2", "GRADLE_USER_HOME": "/cache/gradle", "npm_config_cache": "/cache/npm", "GOPATH": "/cache/go" }
+}

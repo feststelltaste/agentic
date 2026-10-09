@@ -23,6 +23,7 @@ Skills are prompt files that Claude Code loads as slash commands. Drop them into
 | [java-symbolic-renaming](skills/java-symbolic-renaming/) | Rename or improve a Java identifier using symbolic tools (LSP, Serena, OpenRewrite, ast-grep). Handles risk classification, alternative name proposals, and safe execution. |
 | [jupyter-notebook](skills/jupyter-notebook/) | Does traceable, step-by-step work in Jupyter notebooks using literate programming: data analyses and transformations, migration scripts, ETL, codebase exploration, and other multi-step tasks where every step from input to result should be understandable. Distinguishes neutral, reusable *method notebooks* from system-specific *evidence notebooks*, which get a timestamped interpreted copy with an assessment of the results in marked cells. Validates every notebook with `nbformat`. |
 | [mikado-graph](skills/mikado-graph/) | Plan and track complex refactorings using the Mikado Method. Produces a dependency graph (DOT/SVG) that shows what to do first and surfaces non-obvious coupling. |
+| [repo-story](skills/repo-story/) | Repo archaeology: rebuilds a project's git history commit by commit in an isolated container, re-measures what commit messages claim, finds jumps by bisection, and turns the result into a designed PDF article plus carousel slides (12 or 6 pages, English and German) with an optional post text. Measure first, then write. Themeable design (neutral default, your own colors in one command). Rust, Java, Node, Go and Python prepared. |
 
 ## Philosophy
 

@@ -1,0 +1,131 @@
+<title>@@TITLE@@</title>
+<meta charset="utf-8">
+<style>
+/*@@THEME@@*/
+@page{size:A4;margin:24mm 22mm 26mm 22mm;
+  @bottom-left{content:"@@PROJECT@@ · @@TITLE@@";font:400 7.5pt var(--sans);color:var(--faint);letter-spacing:.04em;}
+  @bottom-right{content:counter(page);font:400 7.5pt var(--sans);color:var(--faint);}
+}
+@page:first{margin:0; @bottom-left{content:none} @bottom-right{content:none}}
+*{box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;font-family:var(--sans);font-size:10pt;line-height:1.58;color:var(--ink);background:#fff;
+  font-feature-settings:"kern","liga","onum" 0;hyphens:auto;-webkit-hyphens:auto}
+@media screen{body{background:var(--screen-bg)} .sheet{background:#fff;width:210mm;margin:12mm auto;padding:24mm 22mm 26mm;box-shadow:0 2px 18px rgba(0,0,0,.12)} .cover{margin:12mm auto 0;box-shadow:0 2px 18px rgba(0,0,0,.12)}}
+
+/* ---------- Cover page ---------- */
+.cover{width:210mm;height:297mm;background:var(--brand);color:#fff;position:relative;overflow:hidden;break-after:page;
+  padding:30mm 22mm 22mm;display:flex;flex-direction:column}
+.cover .kicker{font-size:8.5pt;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:800}
+.cover h1{font-weight:800;font-size:52pt;line-height:.98;letter-spacing:-.02em;margin:9mm 0 0}
+.cover .rule{width:28mm;height:3px;background:var(--accent);margin:10mm 0 9mm}
+.cover .lede{font-size:14.5pt;line-height:1.45;color:var(--on-brand);max-width:145mm;margin:0}
+.cover figure{margin:auto 0 0;}
+.cover figure img{width:100%;display:block;border-radius:2px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.cover figcaption{font-size:7.5pt;color:var(--brand-25);margin-top:3mm;letter-spacing:.02em}
+.cover .byline{position:absolute;top:30mm;right:22mm;text-align:right;font-size:7.5pt;line-height:1.6;color:var(--brand-25);letter-spacing:.04em}
+
+/* ---------- Page layout ---------- */
+.col{max-width:118mm}
+h3{break-after:avoid}
+h2{font-weight:800;font-size:17pt;line-height:1.15;letter-spacing:-.01em;color:var(--brand);margin:13mm 0 4mm;break-after:avoid}
+h2::before{content:"";display:block;width:12mm;height:2px;background:var(--accent);margin-bottom:4mm}
+p{margin:0 0 3.2mm;text-align:left;orphans:3;widows:3}
+p + p{text-indent:0}
+.intro p:first-child::first-letter{float:left;font-weight:800;font-size:44pt;line-height:.86;color:var(--brand);margin:1.2mm 2.5mm 0 0}
+.standfirst{font-size:12.5pt;line-height:1.5;color:var(--brand);margin:0 0 7mm;max-width:130mm}
+em{font-style:italic}
+code{font-family:var(--mono);font-size:8.6pt;background:var(--brand-soft);color:var(--brand);padding:.2mm 1.2mm;border-radius:1mm}
+.num{font-variant-numeric:tabular-nums}
+
+/* Margin notes */
+.wrap{position:relative}
+aside.note{float:right;clear:right;width:40mm;margin:1mm -48mm 4mm 0;font-size:7.8pt;line-height:1.5;color:var(--muted);border-top:1.5px solid var(--accent);padding-top:2mm}
+aside.note b{display:block;color:var(--brand);font-weight:800;font-size:7.6pt;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1mm}
+
+/* Pull quote */
+blockquote.pull{margin:8mm 0 8mm;padding:0;max-width:150mm;break-inside:avoid}
+blockquote.pull p{font-weight:800;font-size:17pt;line-height:1.22;color:var(--brand);letter-spacing:-.01em;margin:0}
+blockquote.pull cite{display:block;font-style:normal;font-size:7.8pt;color:var(--muted);margin-top:3mm;letter-spacing:.03em}
+blockquote.pull::before{content:"";display:block;width:12mm;height:3px;background:var(--accent);margin-bottom:4mm}
+
+/* Figures */
+figure{margin:7mm 0 7mm;break-inside:avoid}
+figure.wide{width:166mm}
+figure img{width:100%;display:block;border:0.3mm solid var(--line)}
+figure .pair{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+figure .pair div span{display:block;font-size:7.5pt;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand);margin-bottom:1.5mm}
+figure .stack img + span{margin-top:3mm}
+figure .stack span{display:block;font-size:7.5pt;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand);margin:0 0 1.5mm}
+figcaption{font-size:7.8pt;line-height:1.5;color:var(--muted);margin-top:2.5mm;max-width:150mm}
+figcaption b{color:var(--brand);font-weight:800}
+svg text{font-family:var(--sans)}
+
+/* Boxes */
+.box{background:var(--brand-soft);padding:6mm 7mm 5mm;margin:8mm 0;break-inside:avoid;max-width:166mm}
+.box.accent{background:var(--accent-soft)}
+.box h3{margin:0 0 3mm;font-weight:800;font-size:8pt;letter-spacing:.14em;text-transform:uppercase;color:var(--brand)}
+.box p,.box li{font-size:8.8pt;line-height:1.55}
+.box ul{margin:0;padding-left:4mm}
+.box li{margin-bottom:1.5mm}
+.box pre{font-family:var(--mono);font-size:7.6pt;line-height:1.5;background:#fff;color:var(--brand);padding:3.5mm 4mm;margin:2mm 0 0;white-space:pre-wrap;border-left:2px solid var(--accent)}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:7mm}
+
+/* Facts bar */
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:5mm;margin:9mm 0 10mm;max-width:166mm;break-inside:avoid}
+.facts div{border-top:2px solid var(--brand);padding-top:2.5mm}
+.facts strong{display:block;font-weight:800;font-size:22pt;line-height:1;color:var(--brand);letter-spacing:-.02em}
+.facts span{display:block;font-size:7.6pt;line-height:1.4;color:var(--muted);margin-top:1.5mm}
+
+.end{margin-top:12mm;padding-top:4mm;border-top:1px solid var(--line);font-size:7.6pt;line-height:1.55;color:var(--muted);max-width:166mm}
+.end b{color:var(--brand)}
+.pb{break-before:page}
+</style>
+<section class="cover">
+  <div class="byline">Text<br>@@AUTHOR@@<br>@@DATE@@</div>
+  <div class="kicker">@@KICKER@@</div>
+  <h1>@@TITLE@@</h1>
+  <div class="rule"></div>
+  <p class="lede">One or two sentences: what readers can expect, in which order, by which rules.</p>
+  <figure>
+    <img src="{{IMG:bild.png}}" alt="Cover image">
+    <figcaption>What the picture shows, and how it was made.</figcaption>
+  </figure>
+</section>
+
+<main class="sheet">
+
+<p class="standfirst">The thesis of the article in two sentences.</p>
+
+<div class="wrap intro col">
+<aside class="note"><b>Sources</b>Git log, AGENTS.md, docs, our own re-measurements. Interpretations are marked.</aside>
+<p>The opening: a concrete scene with a time of day, not an overview.</p>
+</div>
+
+<!-- ALWAYS: what is the project? What, what for, built with what, license, maturity, picture -->
+<div class="box">
+  <h3>What is @@PROJECT@@?</h3>
+  <div class="cols2">
+    <ul><li><b>What.</b> …</li><li><b>How it is built.</b> …</li></ul>
+    <ul><li><b>License, team.</b> …</li><li><b>Maturity, honestly.</b> …</li></ul>
+  </div>
+</div>
+
+<h2>Act 1 · Title</h2>
+<div class="wrap col">
+<aside class="note"><b>The commits</b>Numbers, SHAs and times belong in the margin.</aside>
+<p>Narrative text. Explain jargon on first use.</p>
+</div>
+
+<figure class="wide">
+{{CHART:kurve}}
+<figcaption><b>Chart 1 · Title.</b> What the curve shows, source, limitation.</figcaption>
+</figure>
+
+<blockquote class="pull"><p>“A sentence from a commit message that shows the turning point”</p><cite>Commit abc1234 · date, time</cite></blockquote>
+
+<div class="box"><h3>What we do not know</h3><ul><li>Intentions, the state of the tooling that day, what cannot be known without a screen.</li></ul></div>
+
+<div class="end"><b>Basis.</b> Repo, snapshot, method in one sentence.</div>
+
+</main>

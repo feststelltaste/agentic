@@ -1,0 +1,14 @@
+/* Thema "forest": brand #0f3d2e, accent #e8833a (erzeugt mit scripts/make-theme.py) */
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:400;font-style:normal;src:url({{FONT:SourceSans3-Regular.ttf}}) format("truetype");}
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:400;font-style:italic;src:url({{FONT:SourceSans3-Italic.ttf}}) format("truetype");}
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:700;font-style:normal;src:url({{FONT:SourceSans3-Bold.ttf}}) format("truetype");}
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:800;font-style:normal;src:url({{FONT:SourceSans3-ExtraBold.ttf}}) format("truetype");}
+:root{
+  --brand:#0f3d2e; --brand-75:#4b6e62; --brand-25:#c3cecb; --brand-soft:#eff2f1;
+  --accent:#e8833a; --accent-ink:#aa602b; --accent-soft:#fdf5ef;
+  --on-brand:#e0e6e4;
+  --ink:#1a2e27; --muted:#5a726a; --line:#dfe7e4;
+  --faint:#8b9c97; --screen-bg:#eaf0ee;
+  --sans:"Source Sans 3 Bundled",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}

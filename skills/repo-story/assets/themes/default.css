@@ -1,0 +1,14 @@
+/* Thema "default": brand #1f2d3d, accent #f2a93b (erzeugt mit scripts/make-theme.py) */
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:400;font-style:normal;src:url({{FONT:SourceSans3-Regular.ttf}}) format("truetype");}
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:400;font-style:italic;src:url({{FONT:SourceSans3-Italic.ttf}}) format("truetype");}
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:700;font-style:normal;src:url({{FONT:SourceSans3-Bold.ttf}}) format("truetype");}
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:800;font-style:normal;src:url({{FONT:SourceSans3-ExtraBold.ttf}}) format("truetype");}
+:root{
+  --brand:#1f2d3d; --brand-75:#57626e; --brand-25:#c7cace; --brand-soft:#f0f1f2;
+  --accent:#f2a93b; --accent-ink:#946724; --accent-soft:#fef8ef;
+  --on-brand:#e2e4e6;
+  --ink:#1a232e; --muted:#5a6572; --line:#dfe3e7;
+  --faint:#8b939c; --screen-bg:#eaedf0;
+  --sans:"Source Sans 3 Bundled",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}

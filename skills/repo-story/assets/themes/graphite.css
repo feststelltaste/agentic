@@ -1,0 +1,14 @@
+/* Thema "graphite": brand #222222, accent #e5322d (erzeugt mit scripts/make-theme.py) */
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:400;font-style:normal;src:url({{FONT:SourceSans3-Regular.ttf}}) format("truetype");}
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:400;font-style:italic;src:url({{FONT:SourceSans3-Italic.ttf}}) format("truetype");}
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:700;font-style:normal;src:url({{FONT:SourceSans3-Bold.ttf}}) format("truetype");}
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:800;font-style:normal;src:url({{FONT:SourceSans3-ExtraBold.ttf}}) format("truetype");}
+:root{
+  --brand:#222222; --brand-75:#595959; --brand-25:#c8c8c8; --brand-soft:#f1f1f1;
+  --accent:#e5322d; --accent-ink:#d72f2a; --accent-soft:#fdefee;
+  --on-brand:#e2e2e2;
+  --ink:#2e1a1a; --muted:#725a5a; --line:#e7dfdf;
+  --faint:#9c8b8b; --screen-bg:#f0eaea;
+  --sans:"Source Sans 3 Bundled",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}

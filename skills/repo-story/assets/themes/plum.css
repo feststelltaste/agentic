@@ -1,0 +1,14 @@
+/* Thema "plum": brand #3d1f4d, accent #ff7a90 (erzeugt mit scripts/make-theme.py) */
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:400;font-style:normal;src:url({{FONT:SourceSans3-Regular.ttf}}) format("truetype");}
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:400;font-style:italic;src:url({{FONT:SourceSans3-Italic.ttf}}) format("truetype");}
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:700;font-style:normal;src:url({{FONT:SourceSans3-Bold.ttf}}) format("truetype");}
+@font-face{font-family:"Source Sans 3 Bundled";font-weight:800;font-style:normal;src:url({{FONT:SourceSans3-ExtraBold.ttf}}) format("truetype");}
+:root{
+  --brand:#3d1f4d; --brand-75:#6e577a; --brand-25:#cec7d2; --brand-soft:#f2f0f3;
+  --accent:#ff7a90; --accent-ink:#b05463; --accent-soft:#fff4f6;
+  --on-brand:#e6e2e8;
+  --ink:#271a2e; --muted:#6a5a72; --line:#e4dfe7;
+  --faint:#978b9c; --screen-bg:#eeeaf0;
+  --sans:"Source Sans 3 Bundled",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}

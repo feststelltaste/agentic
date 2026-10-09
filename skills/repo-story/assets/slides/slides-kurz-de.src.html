@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><title>Ein Editor, den auch Agenten bedienen</title>
+<style>
+/*@@THEME@@*/
+@page{size:1080px 1350px;margin:0}
+*{box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--screen-bg)}
+.slide{width:1080px;height:1350px;position:relative;overflow:hidden;background:#fff;break-after:page;
+  padding:92px 88px 110px;display:flex;flex-direction:column}
+@media screen{.slide{margin:24px auto;box-shadow:0 2px 18px rgba(0,0,0,.12)}}
+.slide::after{content:attr(data-n) " / " attr(data-t);position:absolute;right:88px;bottom:44px;font-size:22px;color:var(--faint);letter-spacing:.04em}
+.slide::before{content:"PhotoCraft · Entstehungsgeschichte";position:absolute;left:88px;bottom:44px;font-size:22px;color:var(--faint);letter-spacing:.04em}
+.dark{background:var(--brand);color:#fff}
+.dark::after,.dark::before{color:var(--brand-25)}
+.cover::after,.cover::before{display:none}
+.dark .rows em{color:var(--accent)}
+.kicker{font-size:26px;letter-spacing:.2em;text-transform:uppercase;font-weight:800;color:var(--accent-ink)}
+.dark .kicker{color:var(--accent)}
+h1{font-weight:800;font-size:104px;line-height:.98;letter-spacing:-.02em;margin:34px 0 0}
+h2{font-weight:800;font-size:68px;line-height:1.04;letter-spacing:-.015em;color:var(--brand);margin:26px 0 0}
+h2::before{content:"";display:block;width:84px;height:6px;background:var(--accent);margin-bottom:30px}
+.dark h2{color:#fff}
+p,li{font-size:39px;line-height:1.4}
+p{margin:30px 0 0}
+.lede{font-size:40px;line-height:1.4;color:var(--on-brand);max-width:860px;margin-top:36px}
+b{font-weight:800;color:var(--brand)}
+.dark b{color:#fff}
+code{font-family:var(--mono);font-size:.82em;background:var(--brand-soft);color:var(--brand);padding:2px 9px;border-radius:5px}
+.muted{color:var(--muted)}
+ul{margin:30px 0 0;padding:0;list-style:none}
+li{padding-left:44px;position:relative;margin-bottom:24px}
+li::before{content:"";position:absolute;left:0;top:.62em;width:22px;height:6px;background:var(--accent)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:50px 56px;margin-top:64px}
+.stats div{border-top:5px solid var(--brand);padding-top:20px}
+.stats strong{display:block;font-weight:800;font-size:128px;line-height:1;color:var(--brand);letter-spacing:-.03em}
+.stats span{display:block;font-size:33px;line-height:1.35;color:var(--muted);margin-top:12px}
+.quote{margin-top:44px;font-weight:800;font-size:54px;line-height:1.16;color:var(--brand);letter-spacing:-.01em}
+.quote::before{content:"";display:block;width:84px;height:6px;background:var(--accent);margin-bottom:28px}
+.quote small{display:block;font-weight:400;font-size:26px;color:var(--muted);margin-top:20px;letter-spacing:.02em}
+.chart{margin-top:44px;padding:40px 24px 24px;background:var(--brand-soft)}
+.chart svg{display:block}
+.chart svg text{font-size:14.5px}
+.cap{font-size:28px;line-height:1.4;color:var(--muted);margin-top:18px}
+.box{background:var(--brand-soft);padding:36px 42px 22px;margin-top:44px}
+.box.accent{background:var(--accent-soft)}
+.box h3{margin:0 0 20px;font-size:24px;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);font-weight:800}
+.box li{font-size:35px;margin-bottom:18px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:44px}
+.pair span{display:block;font-size:24px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--brand);margin-bottom:10px}
+.pair img{width:100%;display:block;border:2px solid var(--line)}
+.cover img{width:100%;display:block;margin-top:auto;margin-bottom:-30px;box-shadow:0 18px 50px rgba(0,0,0,.4)}
+.rows{margin-top:48px;border-top:2px solid var(--line)}
+.rows div{display:grid;grid-template-columns:1fr 70px 1fr;align-items:center;padding:24px 0;border-bottom:2px solid var(--line);font-size:38px;line-height:1.3}
+.rows i{font-style:normal;font-weight:800;color:var(--accent-ink);text-align:center;font-size:40px}
+.rows em{font-style:normal;font-weight:800;color:var(--brand)}
+.q{counter-reset:q;margin-top:34px}
+.q li{counter-increment:q;padding-left:100px;margin-bottom:46px;font-size:42px}
+.q li::before{content:counter(q);width:64px;height:64px;top:-2px;background:var(--brand);color:#fff;font-weight:800;font-size:36px;
+  display:flex;align-items:center;justify-content:center}
+.foot{margin-top:auto;font-size:25px;line-height:1.45;color:var(--brand-25)}
+</style></head><body>
+
+<section class="slide dark cover" data-n="1" data-t="6">
+  <div class="kicker">Entstehungsgeschichte</div>
+  <h1>Ein Editor, den auch Agenten bedienen</h1>
+  <p class="lede">Ein Photoshop-Nachbau in neun Tagen. Was das Git-Log erzählt, und was wir gemessen haben, als wir alle 510 Commits neu gebaut haben.</p>
+  <img src="{{IMG:photocraft-demo.jpg}}" alt="PhotoCraft mit Hokusais Große Welle">
+</section>
+
+<section class="slide" data-n="2" data-t="6">
+  <div class="kicker">Die Kurzfassung</div>
+  <h2>Keine Geschichte über Tempo. Eine über Design.</h2>
+  <div class="stats">
+    <div><strong>516</strong><span>Commits in 9 Tagen, 307 mit einem Claude-Modell als Co-Autor</span></div>
+    <div><strong>0</strong><span>von 510 neu gebauten Commits haben den Compiler gebrochen</span></div>
+    <div><strong>817</strong><span>Befehle: eine Liste hinter Menü, Kommandozeile und Agenten</span></div>
+    <div><strong>3.974</strong><span>Tests am Ende, am ersten Tag waren es 971</span></div>
+  </div>
+  <p>Alles ist für Agenten bedienbar, und um sie liegt ein Netz aus Prüfungen.</p>
+</section>
+
+<section class="slide" data-n="3" data-t="6">
+  <div class="kicker">Breite ist nicht Treue</div>
+  <h2>100 % des Menüs. Dann der Vorbehalt.</h2>
+  <div class="quote" style="margin-top:36px">„parity estimate reflects 100% menu breadth (depth/fidelity remain)“<small>Sechzehn Sekunden nach „625/625“ · 3. Okt, 02:56</small></div>
+  <div class="chart">{{CHART:fidelity-de}}</div>
+  <div class="cap">Von 258 Photoshop-Dateien trifft jeder Stand so viele innerhalb von 2/255 an Photoshops eigenem Bild. Commit 193 bringt +54 durch Textkanten im Gamma-Raum. Davor: <b>Grau 120 statt 125</b>, unsichtbar.</div>
+</section>
+
+<section class="slide dark" data-n="4" data-t="6">
+  <div class="kicker">Das Muster</div>
+  <h2>Jede Panne wurde zur Prüfung, nicht zur Warnung</h2>
+  <div class="rows" style="border-color:rgba(255,255,255,.22)">
+    <div style="border-color:rgba(255,255,255,.22)">Ein 4-TB-Absturz<i>→</i><em>ein Fuzz-Test</em></div>
+    <div style="border-color:rgba(255,255,255,.22)">„Sieht richtig aus“<i>→</i><em>ein Pixel-Orakel</em></div>
+    <div style="border-color:rgba(255,255,255,.22)">Rote Formatierung<i>→</i><em>ein CI-Schritt</em></div>
+    <div style="border-color:rgba(255,255,255,.22)">Gebrochene Schichten<i>→</i><em>ein Build-Fehler</em></div>
+    <div style="border-color:rgba(255,255,255,.22)">Dateizugriff für Agenten<i>→</i><em>eine Freigabeliste</em></div>
+  </div>
+  <p class="lede" style="font-size:36px;margin-top:30px">Agenten dürfen schnell sein, kommen aber nicht weit, ohne dass etwas anschlägt.</p>
+</section>
+
+<section class="slide" data-n="5" data-t="6">
+  <div class="kicker">Was wir mitnehmen</div>
+  <h2>Fünf Fragen für das eigene Produkt</h2>
+  <ol class="q" style="padding:0;list-style:none">
+    <li>Kann ein Agent <b>alles tun, was ein Mensch</b> in der Oberfläche tut?</li>
+    <li>Ist unsere Oberfläche ein <b>dünner Client</b> über dieser Schicht?</li>
+    <li>Kann ein Agent unser System <b>wahrnehmen</b>, oder muss er raten?</li>
+    <li>Wie <b>sichern wir seinen Zugang</b> ab?</li>
+    <li>Haben wir eine <b>Abnahme</b>, die Abläufe mit Agenten durchspielt?</li>
+  </ol>
+</section>
+
+<section class="slide dark" data-n="6" data-t="6">
+  <div class="kicker">Mehr lesen</div>
+  <h2>Neun Tage, 516 Commits</h2>
+  <p class="lede">Der ganze Artikel zeigt die Messungen: jeder Commit neu gebaut, 20 Schlüsselcommits getestet, alte Stände gegen 258 Photoshop-Dateien gelaufen. Ehrlicher Stand: 133 von 258 Dateien innerhalb der Toleranz, früher Alpha-Stand.</p>
+  <div class="foot">
+    <b>Basis.</b> Git-Log, AGENTS.md, docs/ und Scorecard von storytold/photocraft, Stand 8. Oktober 2026, dazu eigene Nachmessungen in einem abgeschotteten Container. Absichten der Autoren sind unsere Deutung.<br><br>
+    Messungen und Text: Claude Opus 5.5 · Oktober 2026
+  </div>
+</section>
+</body></html>

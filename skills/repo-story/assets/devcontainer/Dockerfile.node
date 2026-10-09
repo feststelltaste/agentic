@@ -1,0 +1,5 @@
+FROM node:22
+RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /cache && chown node /cache
+USER node
+# Always run npm ci with --ignore-scripts (see replay.sh), never silently re-resolve the lockfile.
