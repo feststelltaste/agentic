@@ -11,12 +11,12 @@ The slides (`references/slides.md`) come with an accompanying text. Template and
 1. **Why:** what fascinated you about the project, and what was missing (e.g. no account of how it came about).
 2. **Approach in one sentence, hybrid:** measure first, then write.
 3. **Step 1, data:** what the pipeline built and measured (give numbers: commits, key commits, bisection).
-4. **Step 2, story:** Claude writes article and slides from the measurements and the git log.
+4. **Step 2, story:** The agent writes article and slides from the measurements and the git log.
 5. **Punchline or outlook**, then 3 to 4 hashtags.
 
 ## Rules
 - **Only numbers that are in the measurement files**, the same as in article and slides. Check against `results/` before posting.
-- **Disclose involvement:** "Measured and written by Claude". "Reviewed by me" only if the user really went through article and slides; otherwise "I only skimmed it, corrections welcome".
+- **Disclose involvement:** "Measured and written by an AI agent" (name the agent and model if you want). "Reviewed by me" only if the user really went through article and slides; otherwise "I only skimmed it, corrections welcome".
 - **The authors' intentions are interpretation**, do not write them as fact.
 - **No claim the skill does not deliver** ("works on any repo"): Rust, Java, Node, Go, Python are prepared, so far it has been tried on one project.
 - Language like the slides; deliver both versions on request.

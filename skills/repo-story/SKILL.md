@@ -16,7 +16,7 @@ Turn a project's Git history into three things: **measured facts** (does the sto
 ## Workflow in steps 0 to 8
 Details: `references/method.md`. Commands and pitfalls per language: `references/ecosystems.md`. Keep the order, above all step 0.
 
-0. **Safety first.** Third-party code only in the container: builds run scripts, plugins and dependency code. Template `assets/devcontainer/` (Dockerfile per ecosystem: Rust, Java, Node, Go, Python); `replay.sh` and `bisect-metric.sh` refuse to run outside a container. Do not mount the original, disable push, no credentials, commit nothing, never silently re-resolve dependencies.
+0. **Safety first.** Third-party code only in the container: builds run scripts, plugins and dependency code. Template `assets/devcontainer/` (Dockerfile per ecosystem: Rust, Java, Node, Go, Python); `replay.sh` and `bisect-metric.sh` refuse to run outside a container. The coding agent that drives the skill runs inside that container too, so the container must ship with it: install your agent in the image (add a line to the Dockerfile or a devcontainer feature) and give it access at runtime (login or environment variable), never baked into the image. Do not mount the original, disable push, no credentials, commit nothing, never silently re-resolve dependencies.
 1. **Replay.** `ECOSYSTEM=<eco> scripts/replay.sh <clone> <results>`: check out and build every first-parent commit, status in CSV, resumable.
 2. **Plausibility.** Verify short "ok" times with a cold sample, second pass with tests, format/lint, read numbers from commit messages per commit and re-measure them.
 3. **Read third-party code.** `scripts/review-build-scripts.sh <clone> <eco>`: read all historical build scripts/configurations before running them.

@@ -10,6 +10,8 @@ Ecosystems prepared: Rust, Java (Maven/Gradle), Node, Go, Python. Developed on t
 ## Use
 Copy the folder to where your agent loads skills (e.g. `~/.claude/skills/repo-story/` or `.claude/skills/` in a repo) and ask, e.g. "replay the history of this repo and write an article and slides". Output language follows your request.
 
+The coding agent runs inside the container, so the image must include it. The Dockerfiles in `assets/devcontainer/` ship only the toolchain: add an install line for your agent and give it access at runtime (login or environment variable), not in the image.
+
 Needs: bash, git, Python 3, a container runtime (e.g. Docker) and Chrome or Chromium and poppler (`pdfinfo`, `pdffonts`, `pdftoppm`) for the PDF step (see `scripts/print-pdf.sh`).
 
 ## Design
