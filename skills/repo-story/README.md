@@ -3,7 +3,7 @@
 A skill for **repo archaeology**: rebuild a project's git history commit by commit in an isolated container, re-measure what the commit messages claim, find the jumps by bisection, and turn the result into
 
 - a designed **PDF article** (measurement and story),
-- **Slides for social networks** (carousel) as PDF, 12 or 6 pages, 1080×1350, in English and German (the `-de` templates are German-language example variants).
+- **Slides for social networks** (carousel) as PDF, 12 or 6 pages, 1080×1350. Output language follows your request.
 
 Ecosystems prepared: Rust, Java (Maven/Gradle), Node, Go, Python. Developed on the open-source project PhotoCraft (see `references/example-photocraft.md`).
 
