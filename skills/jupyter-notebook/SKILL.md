@@ -1,6 +1,6 @@
 ---
 name: jupyter-notebook
-description: Performs traceable work step by step in Jupyter notebooks using literate programming – data analyses, data transformations, migration scripts, ETL, codebase exploration with generated follow-up artifacts, exploratory investigations, and any other multi-step procedural task where every step from input to result should be understandable. Always use whenever the task involves creating or working in a Jupyter notebook. Triggers: "Jupyter", "notebook", "ipynb", "traceable analysis", "migration script in a notebook", "analyze raw data", "step by step with documentation".
+description: Performs traceable work step by step in Jupyter notebooks using literate programming – data analyses, data transformations, migration scripts, ETL, codebase exploration with generated follow-up artifacts, exploratory investigations, and any other multi-step procedural task where every step from input to result should be understandable. Always use whenever the task involves creating or working in a Jupyter notebook. Trigger phrases - "Jupyter", "notebook", "ipynb", "traceable analysis", "migration script in a notebook", "analyze raw data", "step by step with documentation".
 ---
 
 # Jupyter Notebook: traceable work, step by step

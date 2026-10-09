@@ -19,4 +19,5 @@ Guidelines for AI agents working in this repository.
 
 - `skills/` holds the skills developed here. This is the product that gets shared.
 - `.agents/skills/` holds skills for working on this repository itself (empty for now). `.claude/skills` is a committed symlink to it, so this does not depend on any hook.
+- `.claude/hooks/check-skill-frontmatter.py` is a working tool for this repo (not shared), registered in `.claude/settings.json`. It validates the frontmatter of every `SKILL.md` after a write or edit (needs PyYAML, otherwise it only checks the `---` delimiters). Check all skills by hand with `python3 .claude/hooks/check-skill-frontmatter.py skills/`.
 - `test/` is a sandbox for trying the skills: `test/.agents/skills` and `test/.claude/skills` are symlinks to `../../skills`, so an agent started in `test/` sees them.
