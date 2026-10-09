@@ -1,4 +1,4 @@
-# link-agents-skills
+# link-skills-dir-for-claude-extrawurst
 
 A Claude Code `SessionStart` hook that keeps `.agents/skills` as the agent-neutral source of skills and makes Claude Code see them.
 
@@ -6,13 +6,17 @@ For the project folder and for `$HOME` (recommended, makes the most sense), it c
 
 This hook exists only because Claude Code still does not read `.agents/skills` by itself. So a symlink is necessary, and having to create it by hand in every repo is annoying. The hook does it for you.
 
+## Why "extrawurst"?
+
+*Extrawurst* is German for "special treatment". The literal meaning is "an extra sausage": someone gets a special sausage, while everyone else eats the regular one. Every other agent reads `.agents/skills`, but Claude Code demands its own directory, so it gets an extra sausage.
+
 ## Install
 
 Copy the script and register it in `~/.claude/settings.json`:
 
     mkdir -p ~/.claude/hooks
-    cp hooks/link-agents-skills/link-agents-skills.sh ~/.claude/hooks/
-    chmod +x ~/.claude/hooks/link-agents-skills.sh
+    cp hooks/link-skills-dir-for-claude-extrawurst/link-skills-dir-for-claude-extrawurst.sh ~/.claude/hooks/
+    chmod +x ~/.claude/hooks/link-skills-dir-for-claude-extrawurst.sh
 
 ```json
 {
@@ -20,7 +24,7 @@ Copy the script and register it in `~/.claude/settings.json`:
     "SessionStart": [
       {
         "hooks": [
-          { "type": "command", "command": "~/.claude/hooks/link-agents-skills.sh" }
+          { "type": "command", "command": "~/.claude/hooks/link-skills-dir-for-claude-extrawurst.sh" }
         ]
       }
     ]

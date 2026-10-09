@@ -58,4 +58,4 @@ Skills are prompt files with scripts and reference material. They are not active
 
 | Hook | Description |
 |------|-------------|
-| [link-agents-skills](hooks/link-agents-skills/) | `SessionStart` hook for Claude Code. Keeps `.agents/skills` as the agent-neutral source of skills: if `.claude/skills` is missing, it creates it as a symlink to `.agents/skills`, for the project folder and for `$HOME` (recommended), and reloads skills. Saves creating the symlink by hand in every repo. |
+| [link-skills-dir-for-claude-extrawurst](hooks/link-skills-dir-for-claude-extrawurst/) | `SessionStart` hook for Claude Code. Keeps `.agents/skills` as the agent-neutral source of skills: if `.claude/skills` is missing, it creates it as a symlink to `.agents/skills`, for the project folder and for `$HOME` (recommended), and reloads skills. Saves creating the symlink by hand in every repo. |

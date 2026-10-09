@@ -11,7 +11,7 @@ link_dir() {
   local base="$1"
   local src="$base/.agents/skills" dst="$base/.claude/skills"
   [ -d "$src" ] || return 0
-  [ -e "$dst" ] && return 0          # already exists (link or real folder): leave it alone
+  [ -e "$dst" ] || [ -L "$dst" ] && return 0   # already exists (link, even a dangling one, or real folder): leave it alone
   mkdir -p "$base/.claude"
   ln -sr "$src" "$dst" && changed=1
 }
