@@ -1,0 +1,6 @@
+FROM python:3
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN useradd -m -u 1000 -s /bin/bash vscode && mkdir -p /cache && chown vscode /cache
+USER vscode
+# Python has no lock file in most old states: do not silently resolve new versions, report dep_fail instead.
+# Old states may need another Python version: state the deviation in the report.

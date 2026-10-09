@@ -6,6 +6,8 @@
 # Second pass (e.g. with tests): use a different BUILD_CMD and a different <results-folder>.
 # Status: ok | fail | dep_fail (dependencies not resolvable / lock does not match, do NOT silently re-resolve) | no_build_file | checkout_failed
 set -u
+# Safety: this script runs "git checkout -f" and "git clean -fdx" on the clone. Only inside the container (step 0).
+[ -f /.dockerenv ] || [ -f /run/.containerenv ] || [ "${REPO_STORY_ALLOW_HOST:-}" = 1 ] || { echo "Refusing to run outside a container (git clean -fdx would destroy local files). Start the container first, or set REPO_STORY_ALLOW_HOST=1 on a throw-away clone." >&2; exit 3; }
 REPO=${1:?repo-clone}; OUT=${2:?results-folder}; REF=${3:-main}
 ECO=${ECOSYSTEM:-custom}
 case "$ECO" in
@@ -21,6 +23,8 @@ esac
 BUILD_FILES=${BUILD_FILES:-$F}; BUILD_CMD=${BUILD_CMD:-$C}; DEP_FAIL_RE=${DEP_FAIL_RE:-$D}; TIMEOUT=${TIMEOUT:-1800}
 [ -n "$BUILD_CMD" ] || { echo "no BUILD_CMD (ECOSYSTEM=custom needs BUILD_CMD)" >&2; exit 2; }
 mkdir -p "$OUT/logs"; cd "$REPO" || exit 1
+start=$(git symbolic-ref -q --short HEAD || git rev-parse HEAD)
+trap 'git checkout -q -f "$start"' EXIT   # leave the clone where it was
 git rev-list --first-parent --reverse "$REF" > "$OUT/commits.txt"
 [ -f "$OUT/results.csv" ] || echo "n,sha,date,status,seconds,subject" > "$OUT/results.csv"
 has_build_file() { [ -z "$BUILD_FILES" ] && return 0; for f in $BUILD_FILES; do [ -f "$f" ] && return 0; done; return 1; }

@@ -10,5 +10,5 @@
     "source=archaeology-cache,target=/cache,type=volume"
   ],
   "runArgs": ["--cap-drop=ALL", "--security-opt=no-new-privileges", "--pids-limit=4096"],
-  "containerEnv": { "CARGO_HOME": "/cache/cargo", "CARGO_TARGET_DIR": "/cache/target", "MAVEN_OPTS": "-Dmaven.repo.local=/cache/m2", "GRADLE_USER_HOME": "/cache/gradle", "npm_config_cache": "/cache/npm", "GOPATH": "/cache/go" }
+  "containerEnv": { "CARGO_HOME": "/cache/cargo", "CARGO_TARGET_DIR": "/cache/target", "MAVEN_OPTS": "-Dmaven.repo.local=/cache/m2", "GRADLE_USER_HOME": "/cache/gradle", "npm_config_cache": "/cache/npm", "GOPATH": "/cache/go", "GOCACHE": "/cache/gocache", "PIP_CACHE_DIR": "/cache/pip" }
 }
