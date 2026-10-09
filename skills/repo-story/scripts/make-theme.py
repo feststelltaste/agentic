@@ -2,7 +2,7 @@
 """Creates a color theme from two colors: python3 make-theme.py <name> <brand> <accent> [--out folder] [--font "Family"]
 Brand = dark main color (cover page, headings), accent = highlight (lines, markers). Everything else
 (shades, text color, lines, readable accent ink with contrast >= 4.5:1) is derived.
-Example: python3 make-theme.py mycompany "#12355b" "#ff7a59" --out ~/.config/repo-story/themes"""
+Example: python3 make-theme.py mycompany "#2f5d50" "#c8a24a" --out ~/.config/repo-story/themes"""
 import argparse, colorsys, pathlib, sys
 
 def rgb(h): h = h.lstrip("#"); return tuple(int(h[i:i+2], 16) / 255 for i in (0, 2, 4))

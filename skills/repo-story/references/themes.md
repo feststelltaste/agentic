@@ -9,7 +9,7 @@ Use: `scripts/print-pdf.sh <folder> <name> forest` or `THEME=forest scripts/prin
 
 ## Your own theme in one line
 ```
-python3 scripts/make-theme.py mycompany "#12355b" "#ff7a59" --out ~/.config/repo-story/themes
+python3 scripts/make-theme.py mycompany "#2f5d50" "#c8a24a" --out ~/.config/repo-story/themes
 ```
 Two colors are enough: **brand color** (dark: cover page, headings) and **accent color** (lines, markers, highlights). The script derives shades, text color, lines and an accent ink that has at least 4.5:1 contrast on white, and warns if the brand color is too light. With `--font "Family"` it uses your own font instead of Source Sans 3.
 

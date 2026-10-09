@@ -15,7 +15,7 @@ Needs: bash, git, Python 3, a container runtime (e.g. Docker) and Chrome or Chro
 ## Design
 Neutral default theme, bundled font (Source Sans 3, SIL OFL). Make your own colors in one line:
 
-    python3 scripts/make-theme.py mycompany "#12355b" "#ff7a59" --out ~/.config/repo-story/themes
+    python3 scripts/make-theme.py mycompany "#2f5d50" "#c8a24a" --out ~/.config/repo-story/themes
     scripts/print-pdf.sh <folder> <name> mycompany
 
 Details: `references/themes.md`.

@@ -1,12 +1,12 @@
 # agentic
 
-Prompts, skills, hooks, commands, and agents for AI-assisted software modernization — designed for use with [Claude Code](https://claude.ai/code).
+Prompts, skills, hooks, commands, and agents for AI-assisted software modernization.
 
 ## What's here
 
 | Directory | Purpose |
 |-----------|---------|
-| [`skills/`](skills/) | Reusable Claude Code skills (slash commands) |
+| [`skills/`](skills/) | Reusable agent skills |
 | [`hooks/`](hooks/) | Shell hooks that extend Claude Code's event lifecycle |
 | `commands/` | Custom slash commands _(coming soon)_ |
 | `agents/` | Specialized sub-agent definitions for multi-agent workflows _(coming soon)_ |
@@ -36,8 +36,18 @@ Skills are prompt files with scripts and reference material. They are not active
 
 ## Philosophy
 
-Modern software rarely needs to be rewritten — it needs to be understood and incrementally improved. The tools here are built around that idea:
+*If you can tool it, tool it. If you can't, prompt it.* (via Torben Keller)
 
-- **Symbolic over textual** — prefer rename tools that understand code structure over find-and-replace
+Modern software rarely needs to be rewritten — it needs to be understood and then incrementally improved. The tools here are built around that idea, in that order.
+
+**Understand first**
+
+- **Facts from the system, not from the model's memory** — tools produce the facts: deterministic metrics, claims re-measured instead of believed, plans built from real code, history and runs instead of the training corpus. The model interprets, and is never the source
+- **Show provenance and limits** — every finding names its evidence and confidence, says what it does not cover, and marks interpretation as interpretation
+- **Leave the original alone** — inputs are read-only, foreign code runs in a container, and results are reproducible from the top
+
+**Then change safely**
+
+- **Symbolic over textual** — prefer tools that understand code structure over find-and-replace
 - **Incremental over big-bang** — surface blockers early, make safe leaf-node changes first
-- **Transparent artifacts** — generate reviewable plans (DOT graphs, YAML recipes, shell scripts) before executing anything
+- **Review before execute** — generate the plan or artifact first, and let a person confirm it before anything runs
