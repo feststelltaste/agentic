@@ -7,13 +7,16 @@ Prompts, skills, hooks, commands, and agents for AI-assisted software modernizat
 | Directory | Purpose |
 |-----------|---------|
 | [`skills/`](skills/) | Reusable Claude Code skills (slash commands) |
-| `hooks/` | Shell hooks that extend Claude Code's event lifecycle _(coming soon)_ |
+| [`hooks/`](hooks/) | Shell hooks that extend Claude Code's event lifecycle |
 | `commands/` | Custom slash commands _(coming soon)_ |
 | `agents/` | Specialized sub-agent definitions for multi-agent workflows _(coming soon)_ |
 
 ## Skills
 
-Skills are prompt files that Claude Code loads as slash commands. Drop them into `~/.claude/skills/` (or reference them from your project's `.claude/` directory) to activate them.
+Skills are prompt files with scripts and reference material. They are not active in this repo: an agent started in the repo root does not load them.
+
+- **Try them:** start your agent in `test/`. `test/.claude/skills` links to `../../skills`, so only that folder sees them.
+- **Install one:** link or copy its folder into your agent's skills directory, e.g. `ln -s "$PWD/skills/repo-story" ~/.claude/skills/repo-story`. A link keeps it in sync with the repo.
 
 | Skill | Description |
 |-------|-------------|
@@ -24,6 +27,12 @@ Skills are prompt files that Claude Code loads as slash commands. Drop them into
 | [jupyter-notebook](skills/jupyter-notebook/) | Does traceable, step-by-step work in Jupyter notebooks using literate programming: data analyses and transformations, migration scripts, ETL, codebase exploration, and other multi-step tasks where every step from input to result should be understandable. Distinguishes neutral, reusable *method notebooks* from system-specific *evidence notebooks*, which get a timestamped interpreted copy with an assessment of the results in marked cells. Validates every notebook with `nbformat`. |
 | [mikado-graph](skills/mikado-graph/) | Plan and track complex refactorings using the Mikado Method. Produces a dependency graph (DOT/SVG) that shows what to do first and surfaces non-obvious coupling. |
 | [repo-story](skills/repo-story/) | Repo archaeology: rebuilds a project's git history commit by commit in an isolated container, re-measures what commit messages claim, finds jumps by bisection, and turns the result into a designed PDF article plus carousel slides (12 or 6 pages, English and German) with an optional post text. Measure first, then write. Themeable design (neutral default, your own colors in one command). Rust, Java, Node, Go and Python prepared. |
+
+## Hooks
+
+| Hook | Description |
+|------|-------------|
+| [link-agents-skills](hooks/link-agents-skills/) | `SessionStart` hook for Claude Code. Keeps `.agents/skills` as the agent-neutral source of skills: if `.claude/skills` is missing, it creates it as a symlink to `.agents/skills`, for the project folder and for `$HOME` (recommended), and reloads skills. Saves creating the symlink by hand in every repo. |
 
 ## Philosophy
 

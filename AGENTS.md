@@ -18,5 +18,4 @@ Guidelines for AI agents working in this repository.
 ## Layout
 
 - `skills/` holds the skills developed here. This is the product that gets shared.
-- `.agents/skills/` holds skills for working on this repository itself. `.claude/skills` is a symlink to it.
 - `test/` is a sandbox for trying the skills: `test/.claude/skills` is a symlink to `../../skills`, so an agent started in `test/` sees them.
