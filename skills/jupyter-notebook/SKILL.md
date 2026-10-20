@@ -273,7 +273,12 @@ notebook imports must be listed in the install cell. Non-Python tools the notebo
 7. **Interpreted copy (evidence notebooks only):** once the notebook has run cleanly and is validated, make the timestamped
    copy with an assessment of the important results (next section). Method notebooks skip this step; for an evidence notebook skip it only if the user
    said so.
-8. **Wrap up:** tell the user where the notebook (and, for an evidence notebook, the interpreted copy) is, what the notebook does
+8. **Export HTML every time:** render the final executed notebook with nbconvert's built-in `classic` template so the page
+   has a Jupyter Notebook-like reading width and wide outputs scroll within their cells. Keep its outputs and exclude code input:
+   `jupyter nbconvert --to html --template classic --no-input --output-dir output <notebook>.ipynb`.
+   For an evidence notebook, also render the interpreted copy to HTML after adding its interpretation cells. Check that
+   each HTML file exists and contains the expected results; the HTML is a readable export, not a replacement for the `.ipynb`.
+9. **Wrap up:** tell the user where the notebook, its HTML export (and, for an evidence notebook, the interpreted copy and its HTML export) are, what the notebook does
    (the approach, without inflating it with data values), the main points of the assessment, and what
    remains open or uncertain (e.g. assumptions made during cleaning or mapping).
 
@@ -326,7 +331,7 @@ notebook (named after its topic, kebab-case):
 ```
 notebooks/<topic>/<topic>.ipynb
 notebooks/<topic>/<topic>-<YYYYMMDD-HHMMSS>-<version>.ipynb   # interpreted copies, one per documented run
-notebooks/<topic>/output/        # everything the notebook generates (OUTPUT_DIR = "output")
+notebooks/<topic>/output/        # generated data and HTML exports (OUTPUT_DIR = "output")
 ```
 
 Paths in the configuration cell for outputs are relative to the notebook, so the notebook and
