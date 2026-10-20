@@ -19,6 +19,9 @@ Best moments (by instinct): a commit that reports "100 %" and 16 seconds later s
 5. **File names speak and start with the repo name:** `<repo>-story-en.pdf`, `<repo>-measurement-en.pdf`, not `article2.pdf`.
 6. **The language of the results follows the project/user**; replies to the user follow the language of the session.
 7. Check with tools, do not guess: render the PDF, look at the pages as a contact sheet (`pdftoppm -r 40`, combine images into a grid), remove forced page breaks when gaps appear, keep headings away from the page bottom (`h3{break-after:avoid}`).
+8. For long-lived projects, show the stages the project went through (names, architecture) and what the code and build wiring actually added at each one; separate this from unverified runtime claims.
+9. Give charts and diagrams a source and units. Inspect every final PDF page at readable size for text crossing page or card boundaries. In programmatic layouts, wrap by measured font width rather than character count, then re-render after the last edit.
+10. Before choosing a visual theme, inspect the current application's typography, color variables, spacing, cards and logo assets. Use the actual design system for the article when it is identifiable; document the source files and keep font licensing rules from `themes.md`.
 
 ## Design
 Template in `assets/` (A4, cover page, margin column, facts bar, boxes, pull quote, figures, SVG charts). Colors and font come from a **theme** (default `default`, Source Sans 3 bundled); own colors via `scripts/make-theme.py`, licensed fonts only privately: see `references/themes.md`.

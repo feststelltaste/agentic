@@ -33,12 +33,14 @@ Details: `references/method.md`. Commands and pitfalls per language: `references
 - **Commit trailers prove involvement, their absence proves nothing.** Squash commits count trailers multiple times: count per commit.
 - **Do not silently repeat invalid runs.** Discard, name the cause, measure again, keep the old run for documentation only.
 - **README and docs may lag behind.** That is material, not a measurement error.
+- **Date changes by evidence, not by the last commit that touches them.** For renames and restructurings, check dated metadata (build files, UI strings, package paths); a later cleanup commit does not date the original change. If the repo builds variants of itself, trace them from build definition to concrete configuration or code.
+- **A source-only story is not a measurement.** Compare selected historical states with the current code, name the sampled commits, and label runtime behavior as unverified. Replay and bisection stay available when measurements are requested.
 
 ## Storing results
 `results/` next to the clone: `results.csv`, `logs/`, `variant-b.csv`, `scripts/` (with README: what ran as a script, what by hand), `report.md`, `cases.md`, one folder per article with `*.src.html`, `build.py`, PDF; slides in `slides/`. File names start with the **repo name** and give type, variant and language (`<repo>-article-en.pdf`, `<repo>-measurement-en.pdf`, `<repo>-slides-long-en.pdf`, `<repo>-slides-short-en.pdf`), never a bare `article.pdf` or `slides.pdf`, so a loose file is unambiguous outside its folder. `print-pdf.sh` takes the name from `<name>.src.html`: name the source this way from the start.
 
 ## Building an article (short guide)
-1. Create a folder, copy `assets/build.py` and `assets/article-template.src.html` into it, rename the template to `<name>.src.html`, replace the `@@...@@` placeholders (`@@TITLE@@`, `@@AUTHOR@@`, `@@DATE@@`, `@@PROJECT@@`, `@@KICKER@@`). **Design:** choose a theme (`default`, `forest`, `plum`, `ocean`, `graphite` or your own via `scripts/make-theme.py`), see `references/themes.md`.
+1. Create a folder, copy `assets/build.py` and `assets/article-template.src.html` into it, rename the template to `<name>.src.html`, replace the `@@...@@` placeholders (`@@TITLE@@`, `@@AUTHOR@@`, `@@DATE@@`, `@@PROJECT@@`, `@@KICKER@@`). **Design:** inspect the current application's UI fonts, layout and color tokens first and use them for the article when available; otherwise choose a theme (`default`, `forest`, `plum`, `ocean`, `graphite` or your own via `scripts/make-theme.py`), see `references/themes.md`.
 2. Put images next to the source (`{{IMG:file.png}}`, JPG is embedded appropriately). Charts in `charts.py` as `CHARTS = {"name": fn}` with `line_chart()`.
 3. Check with `pdffonts` that the font is embedded in the PDF. Source Sans 3 (OFL) is bundled. Licensed company fonts only in a private theme under `~/.config/repo-story/themes`, never in the skill.
 4. `scripts/print-pdf.sh <folder> <name> [theme]` builds and prints. Then look at a contact sheet (`pdftoppm -r 40`, montage the pages into a grid), fix gaps and orphaned headings, print again.

@@ -36,3 +36,5 @@ Three patterns have proven useful: a **community batch** (many merges within min
 
 ## Additional sources
 AGENTS.md / CLAUDE.md / CONTRIBUTING (rules, completion checklist, parallel work), README (self-image, outdated numbers), roadmap/scorecard (honest gaps), architecture docs, CI configuration (what it really enforces, since when). From these: design decisions, order, guardrails.
+
+For a code-based story, inspect the introducing commit as well as the later implementation: a new module can be a stub. Use `git show <sha>:path`, `git ls-tree -r --name-only <sha>`, and `git log -S 'literal' -- path` to compare named states. If the repo produces variants (editions, flavors, targets), follow build definition → variant module → packaged result and inspect concrete behavior. State the sampling rule and do not treat file counts or checked-in test reports as executed results. This supplements the replay and bisection steps; it does not replace them.

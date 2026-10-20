@@ -2,6 +2,8 @@
 
 Articles and slides are **themeable**: colors and font live in a small CSS file (`assets/themes/<name>.css`) that `build.py` inserts into the template at `/*@@THEME@@*/`. The templates themselves contain no brand colors.
 
+Before selecting a theme, inspect the current application's theme variables, font declarations and bundled font files, page layout and logo assets. Derive the article's background, surface, text, primary and accent colors from those sources; record the source paths with the article. If the UI bundles a usable font, embed that font in the PDF only when its license permits it. For a code-generated PDF, use a reproducible conversion step when the bundled web font format is unsupported by the renderer, then verify the font actually appears in the PDF. Keep licensed private fonts outside the shared skill as described below.
+
 ## Bundled themes
 `default` (slate and amber, the default), `forest`, `plum`, `ocean`, `graphite`. Font: **Source Sans 3** (SIL Open Font License, static weights, lives in `assets/fonts/` and is embedded at build time, `OFL.txt` stays with it).
 
