@@ -293,6 +293,7 @@ data, it is the one source and it can be re-run. The copy documents one run.
    (`git rev-parse --short HEAD`), with `-dirty` appended if there are uncommitted changes (`git status --porcelain` is not empty), or `nogit` outside a Git repository. Take the
    timestamp from the clock when the copy is made. Never overwrite an earlier copy, and do not run the copy again: it keeps the outputs of the run it documents. Directly under the
    title add one marked cell that says when the copy was made, from which repository state and from which notebook.
+   Use the user's local time zone for timestamps when it is known from the conversation; otherwise use the environment's configured local time zone. State the time zone and UTC offset explicitly in the provenance cell. Never present UTC silently as local time. Determine the version state from the repository being analyzed, even when the notebook lives in a different repository.
 2. **Read the copy from top to bottom.** Read every output, and look at each figure with the image viewer instead of guessing from the code. After each **important** result add one
    **interpretation cell**. Important means: what answers the question of the notebook, a surprising value, a result that rests on a heuristic or a sample, a check that passed
    narrowly. Not every `head()` and not every intermediate table.
