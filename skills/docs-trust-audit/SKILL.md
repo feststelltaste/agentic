@@ -171,7 +171,7 @@ Per document and per finding give the class from the table, the evidence (file, 
 
 Rank the documents by harm, not by signal density: a short setup section with a wrong command is worse than a long empty overview. Do not average documents into one number for the repository without showing the spread.
 
-### 5b. Root cause and alternatives
+### 6. Root cause and alternatives
 
 For every finding that is not `sound`, ask **why was this written as a document?** The usual answer is that the code could not carry the information, or that nobody checked the document. The remedy follows from the cause, and the best remedy changes the code, not the text. Look at the code the passage is about, name the cause, and propose a concrete alternative with the place where it goes.
 
@@ -193,7 +193,7 @@ If the code offers none of these because of its shape (a god class, hidden coupl
 
 Also name **how the repository keeps documentation honest** from now on, as tools the maintainers can adopt: a check for dead links and paths, a check that fails when a documented command, flag or file is gone, doctests or executable examples, generated reference docs in CI, an architecture test for the layers the text describes, a rule in code review (every new document says what the code cannot), and a date or review owner on the documents that stay. Recommend only what fits the repository and its language.
 
-### 6. Report
+### 7. Report
 
 Write `docs-trust-report.md` (and a CSV with one row per finding: document, kind, line, class, severity, claim, evidence, confidence) into a folder of the analysed repository, not into the skill. It contains:
 
@@ -202,7 +202,7 @@ Write `docs-trust-report.md` (and a CSV with one row per finding: document, kind
 3. the false and stale claims in a table a maintainer can fix in minutes
 4. provenance: which documents look unreviewed
 5. what was **not** verified and why (not run, no access, unverifiable)
-6. the root cause per finding (step 5b) and the alternative with its location in the code, and the tools that keep the documentation honest afterwards
+6. the root cause per finding (step 6) and the alternative with its location in the code, and the tools that keep the documentation honest afterwards
 7. a suggestion per document, ordered from the best remedy down:
    - **let the code say it**: rename, restructure, split into small units, separate interface from implementation, so the passage is not needed
    - **make it checkable**: replace with something generated or tested (a `--help` output, an OpenAPI file, a diagram generated from the code, a doctest, an architecture test, a CI check for links and paths)
