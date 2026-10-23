@@ -27,7 +27,7 @@ A document is untrustworthy because of **missing verification, not because of wh
 | Class | The text | Harm |
 |---|---|---|
 | `false` | claims something the system does not do or have: a path, class, function, flag, endpoint, config key or command that does not exist, a wrong version, a diagram with components that are not there | high: people act on it |
-| `stale` | was true once, the code moved on (renamed module, removed option, changed default) | high to medium |
+| `stale` | was true once, the code moved on (renamed module, removed option, changed default), or points to something that exists only elsewhere (a document never in this repository's history, a branch that is gone, a wrong line number): a dangling reference | high to medium |
 | `misleading` | true in a narrow sense but suggests more: a feature list that mixes planned and real, "supports X" for a stub, an architecture drawn from folder names | medium |
 | `empty` | generic text that fits any project (see below), or names classes and methods and restates the code line by line | low, but it hides the useful parts and costs reading time |
 | `duplicate` | the same content in several places (README, docs/, docstrings, wiki) that will drift apart | low now, high later |
@@ -38,7 +38,7 @@ A document is untrustworthy because of **missing verification, not because of wh
 
 ### 1. Scope and inventory
 
-List every document: `*.md`, `*.rst`, `*.adoc`, `docs/`, `ADR`s, `AGENTS.md`/`CLAUDE.md`, `CONTRIBUTING`, API descriptions (OpenAPI), diagrams in any form (see step 3), and always the docstrings and comments in the code. Generated wikis (DeepWiki-style pages and the like) only when the user asks for them. Exclude vendored and generated folders (`node_modules`, `vendor`, `target`, `build`, copied libraries) by default and **count** the documents in them, so the report can say how many were left out; filter them out in the search itself (`-not -path`), or a path check floods on thousands of foreign files. Say what is in scope and what is not before reading further. For a large repository sample by size and importance (entry-point docs first, the most-changed code files first) and say so.
+List every document: `*.md`, `*.rst`, `*.adoc`, `docs/`, `ADR`s, `AGENTS.md`/`CLAUDE.md`, `CONTRIBUTING`, API descriptions (OpenAPI), diagrams in any form (see step 3), and always the docstrings and comments in the code. Generated wikis (DeepWiki-style pages and the like) only when the user asks for them. Exclude vendored and generated folders (`node_modules`, `vendor`, `target`, `build`, copied libraries) by default and **count** the documents in them, so the report can say how many were left out; filter them out in the search itself (`-not -path`), or a path check floods on thousands of foreign files. Say what is in scope and what is not before reading further. For a large repository sample, and say how and how many ("50 of 331"): documents by how much can be checked in them (pages that name flags, APIs, config keys, paths, versions or numbers come first, because they can be compared with the code) and by importance (entry-point and setup docs), spread over the directories; code comments by size and by change frequency (the largest and most-changed files first). Read short documents whole.
 
 Give every document a **kind**, because the questions differ:
 
@@ -49,7 +49,7 @@ Give every document a **kind**, because the questions differ:
 | specs (OpenSpec, Spec Kit, PRDs, user stories) | see "Spec-driven documents" in step 4 |
 | comments and docstrings | see "Comments in code" in step 4 |
 | training and workshop material | whether the examples still match the code; do not hold it to the standard of reference documentation |
-| instructions for tools and agents (skills, rules files, `AGENTS.md`) | the paths, commands and names they use; being generic is by design here, so the swap test does not apply |
+| instructions for tools and agents (skills, rules files, `AGENTS.md`) | the paths, commands and names they use; being generic is by design here, so the swap test does not apply. Nested instruction files (a `CLAUDE.md` in a subfolder) are checked against each other and against the root: the same rule stated two ways is a finding. A symlink or exact copy (`AGENTS.md` to `CLAUDE.md`) is one document: count and rate it once and note the link |
 | configuration written by an agent (component definitions, linking rules) | every example and name against the code; these are acted on by tools, so errors weigh heavy |
 
 Write the kind next to the verdict in the report.
@@ -63,7 +63,7 @@ Write the kind next to the verdict in the report.
 - the document is older than large changes of the code it describes and was not touched since (compare the last change of the doc with the last change of the paths it names)
 - one file written in one day that covers the whole system in the same voice
 
-Report these as provenance hints. Do not call a document AI generated on this evidence alone; call it **unreviewed** if nobody edited it after it appeared.
+After a mass move, a rename or a port to another language the history is misleading (blame restarts, the last touch is a path rewrite): say so and do not read dates as review. Report these as provenance hints. Do not call a document AI generated on this evidence alone; call it **unreviewed** if nobody edited it after it appeared.
 
 ### 3. Style signals (where to look)
 
@@ -96,9 +96,11 @@ Everything else is a candidate for `redundant`, `empty` or `duplicate`. Then ext
 
 | Claim type | Check |
 |---|---|
-| a file or folder path | exists? at that place? Let the agent write a throwaway script for this: collect what looks like a path (backticks, Markdown links, `File.java:120` references), skip the excluded folders in the search itself, check that each target exists and, for a line reference, that the line exists. A missing target is only a candidate: search for the name first (moved means `stale`), and remember that a path may be an example or belong to another repository |
-| an enumeration (list of classes, modules, endpoints, options): a smell by itself, never acceptable | compute the real set from the code (search, the language's tool, the routes) and compare both ways: entries that do not exist (`false`), real things that are missing (`stale`, and the list is `misleading` if it reads as complete). Even a complete list is rated as a finding (`redundant`: the code is the list), because it will not stay complete. If the real set cannot be derived, say that completeness is open and rate the list `suspicion` |
-| a class, function, option, flag, env variable, config key | search for the definition; is it used? |
+| a file or folder path | exists? at that place? Write a throwaway script for this: collect what looks like a path (backticks, Markdown links, `File.java:120` references), skip the excluded folders in the search itself, check that each target exists and, for a line reference, that the line exists. A missing target is only a candidate: search for the name first (moved means `stale`), and skip paths that are examples (sample output, placeholders such as `path/to/x`, `<name>`, `foo/bar`, globs, `~/...`) or belong to another repository |
+| an enumeration (list of classes, modules, endpoints, options): a smell by itself, never acceptable | compute the real set from the code (search, the language's tool, the routes) and compare both ways: entries that do not exist (`false`), real things that are missing (`stale`, and the list is `misleading` if it reads as complete). Even a complete list is rated as a finding (`redundant`: the code is the list), because it will not stay complete. If the real set cannot be derived, say that completeness is open and give the list the confidence `suspicion` |
+| a class, function, option, flag, env variable, config key, API name | search for the definition; is it used? For documents full of such tokens do this in bulk: collect every flag, environment variable, API name and config key the document names and search each in the source, **excluding Markdown files from the search** (or the document finds itself). This was the most productive check of the trial runs |
+| a line number (`File.java:120`, "at line 294") | read the line (`sed -n 120p`) and check that the named thing is there; if the file moved or changed, find where the thing is now. Line-anchored references drift first and were the most common false claim |
+| a reference to another document, branch or file in a comment or text | check that it exists and ever existed in this repository (`git log -- <path>`); count the references over the whole repository (`grep` across code comments too): the same missing target cited from hundreds of places is one finding with a count. Rate as `stale` (dangling) |
 | a command (`make x`, `npm run y`, `docker compose up`) | is the command still there as written? Look for the make target, npm script, CLI entry point, script file, subcommand and every flag it names in the code and the manifests, and check that the arguments still match. Never run it: the audit is static, and the report says that commands were checked by reading only. Running the safe ones (`--help`, dry run, in a container) can be offered to the user as a later step, never done unasked |
 | a version, runtime or dependency | compare with the manifest and lock file |
 | an endpoint, event, table, queue | present in routes, schema, migrations? |
@@ -106,9 +108,9 @@ Everything else is a candidate for `redundant`, `empty` or `duplicate`. Then ext
 | "supports X", "handles Y" | find the code and a test; a stub, a TODO or a disabled branch makes it `misleading` |
 | a number (limits, timeouts, defaults, performance, coverage, counts) | find the constant, or recompute the count by search; for a measurement taken by a tool you do not run, use the artefact on disk (a coverage CSV, a build report) and compare; with none, mark it `unreproducible` and do not guess. An unsourced number is a suspicion |
 | a link | internal link resolves? external link only if asked |
-| the same fact in several documents | rate the document that holds the source once; the copies are `duplicate`. A copy that a tool appended or generated from one source is rated through its source |
+| the same fact in several documents | rate the document that holds the source once; the copies are `duplicate`. Compare a document with its twin line by line and give the share that is verbatim ("134 of 182 lines") and which side is already fixed: that is the measure of drift. A copy that a tool appended or generated from one source is rated through its source |
 
-Statements that cannot be checked (intent, history, rationale) are not a problem by that fact. Mark them `unverifiable` and look at whether they say something specific: a concrete trade-off, a date, a person, an incident. Specific and unverifiable is useful; generic and unverifiable is `empty`.
+Statements that cannot be checked (intent, history, rationale) are not a problem by that fact. Leave them out of the claim count and mark them `unverifiable` (a status, not a class), and look at whether they say something specific: a concrete trade-off, a date, a person, an incident. Specific and unverifiable is useful; generic and unverifiable is `empty`.
 
 #### Decision records (ADRs)
 
@@ -160,7 +162,7 @@ The same comment repeated in many places is a convention that belongs in one pla
 
 Per document and per finding give the class from the table, the evidence (file, line, what was searched, what was found) and a confidence (`checked`, `likely`, `suspicion`). Per document add a score that is easy to read and easy to reproduce:
 
-- **claims checked**: number of verifiable claims, and the share that hold, are stale or are false
+- **claims checked**: the number of distinct checkable statements you checked (a path, a name, a flag, a command, a number, one box or arrow of a diagram each count as one; the same statement repeated counts once), and the share that hold, are stale or are false. For a document with hundreds, count per claim type and say that the figures are approximate
 - **signal density**: style signals per 100 lines, for documents of at least 100 lines; for shorter ones give the counts
 - **verdict**: a judgement by harm and not a percentage. Look at where the wrong claims sit (a part a reader or a tool acts on, or a side remark), how central they are and how many there are, and give the share of checked claims only as information. State in one sentence why the verdict was chosen:
   - `trustworthy`: the checked claims hold
@@ -197,7 +199,7 @@ Also name **how the repository keeps documentation honest** from now on, as tool
 
 Write `docs-trust-report.md` (and a CSV with one row per finding: document, kind, line, class, severity, claim, evidence, confidence) into a folder of the analysed repository, not into the skill. It contains:
 
-1. scope: what was read, what was left out, how it was sampled
+1. scope: what was read, what was left out, how it was sampled; kinds that do not occur (no ADRs, no specs) are listed as not applicable
 2. the verdict per document, ranked by harm, with the three worst findings each (all of them for a short document)
 3. the false and stale claims in a table a maintainer can fix in minutes
 4. provenance: which documents look unreviewed
