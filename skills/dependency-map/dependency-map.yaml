@@ -7,11 +7,13 @@
 # ecosystems found in the repository are detected, `ecosystems:` can fix them.
 
 scope:
-  ecosystems: auto               # auto = every language with at least 3 code files; or a list: [java, python, php, ruby, javascript, c]
+  ecosystems: auto               # auto = every language with at least 3 code files; or a list: [java, python, php, ruby, javascript, csharp, c]
   extensions: auto               # auto = the code files of those ecosystems plus the usual data, template and configuration files; or a list
   exclude:                       # regular expressions on repo-relative paths
     - '(^|/)(node_modules|vendor|bower_components|third_party|3rdparty|target|build|dist|out|__pycache__|\.venv|venv|site-packages)/'
     - '(^|/)src/test/'
+    - '(^|/)[\w.]*\.(Tests?|Specs?)/'   # .NET test projects (Backend.Tests/)
+    - '(^|/)(bin|obj)/'               # .NET build output
     - '\.min\.(js|css)$'
   max_file_kb: 2048              # [own] larger files are skipped (generated, data dumps)
 
@@ -31,6 +33,8 @@ tables:                          # classes, mappings and templates that use a ta
   min_name_length: 4             # [own] shorter names are mostly ordinary words
   context: 'from|join|into|update|table|delete\s+from|alter\s+table|references'   # an SQL keyword must precede the name
   skip_names: []                 # table names to ignore although they match, e.g. generic ones
+  name_patterns: []              # regular expressions for a repository's own way to name a table in code, `{tables}` stands for the known names,
+                                 # group 1 is the table; e.g. a repository base class: '\bbase\(\s*\w+\s*,\s*"({tables})"'
 
 co_change:                       # files that change together in Git: evidence, not a rule
   enabled: true

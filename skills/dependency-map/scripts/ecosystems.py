@@ -54,6 +54,22 @@ def _ruby(f, t):
     return out
 
 
+CS_TYPE = re.compile(r"^\s*(?:(?:public|internal|private|protected|static|sealed|abstract|partial|readonly|unsafe|file|new|ref)\s+)*"
+                     r"(?:class|interface|struct|enum|record(?:\s+(?:class|struct))?)\s+([A-Za-z_]\w*)", re.M)
+CS_NAMESPACE = re.compile(r"^\s*namespace\s+([\w.]+)\s*[;{]?", re.M)
+
+
+def _csharp(f, t):
+    """Every type a .cs file declares, with its namespace (block or file-scoped). C# does not tie a type to its file name, so the file
+    is not used; nested types are named with the outer namespace only (the dotted name a string would carry is Ns.Outer+Inner, rare)."""
+    spans = [(m.start(), m.group(1)) for m in CS_NAMESPACE.finditer(t)]
+    out = []
+    for m in CS_TYPE.finditer(t):
+        ns = next((n for pos, n in reversed(spans) if pos < m.start()), "")
+        out.append(((ns + "." if ns else "") + m.group(1), "class"))
+    return out
+
+
 def _js(f, t):
     return []                                        # modules are files: reached by path (file-name), not by a declared name
 
@@ -120,6 +136,24 @@ ECOSYSTEMS = {
                     ("eval", re.compile(r"(?<![\w.])(?:eval|new\s+Function)\(\s*(?P<arg>[^)\n]*)"))],
         "decl": [re.compile(r"\bfunction\s+([A-Za-z_$][\w$]*)\s*\("), re.compile(r"^\s*(?:export\s+)?(?:class)\s+([A-Za-z_$][\w$]*)", re.M),
 ],
+    },
+    "csharp": {
+        "code_ext": ("cs",),
+        "double_quotes_only": True,                  # 'x' is a char; verbatim (@"..") and interpolated ($"..") strings still start with a double quote
+        "blank": re.compile(r"^[ \t]*///[^\n]*", re.M),   # XML doc comments: a <see cref="Ns.Type"/> is checked by the compiler, not a hidden name
+        "symbols": _csharp,
+        "route_prefix": re.compile(r'\[\s*Route\s*\(\s*(?:template\s*:\s*)?@?"(?P<url>[^"]*)"[^\]]*\]\s*(?:\[[^\]]*\]\s*)*(?:(?:public|internal|sealed|abstract|partial)\s+)*class\b'),
+        # ASP.NET Core attribute routing (a [controller] token is replaced by the class name in the scanner) and minimal APIs
+        "routes": [re.compile(r'\[\s*(?:Route|Http(?:Get|Post|Put|Delete|Patch|Head|Options))\s*\(\s*(?:template\s*:\s*)?@?"(?P<url>[^"]+)"'),
+                   re.compile(r'\.Map(?:Get|Post|Put|Delete|Patch|Methods|Group|Hub<\w+>)\s*\(\s*@?"(?P<url>/[^"]*)"')],
+        "dynamic": [("Type.GetType", re.compile(r"\bType\.GetType\(\s*(?P<arg>[^)\n]*)")),
+                    ("Activator.CreateInstance", re.compile(r"\bActivator\.CreateInstance(?:<[^>\n]*>)?\(\s*(?P<arg>[^)\n]*)")),
+                    ("Assembly.Load", re.compile(r"\bAssembly\.Load\w*\(\s*(?P<arg>[^)\n]*)")),
+                    ("GetType/GetMethod/GetProperty/GetField", re.compile(r"\.(?:GetType|GetMethod|GetProperty|GetField|GetMember|GetEvent)\(\s*(?P<arg>[^)\n]+)")),
+                    ("InvokeMember", re.compile(r"\.InvokeMember\(\s*(?P<arg>[^,)\n]*)")),
+                    ("GetService", re.compile(r"\.Get(?:Required)?(?:Keyed)?Service\(\s*(?P<arg>[^)\n]+)"))],
+        "decl": [re.compile(r"\b(?:public|protected|internal)\s+(?:(?:static|virtual|override|abstract|required|new)\s+)*[\w<>\[\],.?]+\s+([A-Z]\w*)\s*\{\s*(?:get|set|init)\b"),
+                 re.compile(r"\b(?:public|protected|internal)\s+(?:(?:static|virtual|override|abstract|async|new)\s+)*[\w<>\[\],.?]+\s+([A-Z]\w*)\s*\(")],
     },
     "c": {
         "code_ext": ("c", "h", "cc", "cpp", "hpp", "cxx"),

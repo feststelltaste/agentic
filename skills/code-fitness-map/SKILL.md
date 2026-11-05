@@ -48,7 +48,7 @@ Provenance of every number in `weights.yaml`: `[own]` our decision, `[proxy]` ou
 |---|---|---|
 | Complex Method | lizard cyclomatic complexity per function, `[own]` 9 (alert 100) | heuristic |
 | Large Method | lizard code lines per function, `[own]` 70 (alert 500); anonymous functions are skipped | heuristic |
-| Nested Complexity | own scanner: deepest nesting of conditionals and loops, an `else` block counts as a level, `[own]` 4 | heuristic |
+| Nested Complexity | own scanner: deepest nesting of conditionals and loops (`if`, `for`, `foreach`, `while`, `switch`, `do`, `catch`; `using`, `lock` and `fixed` blocks are scopes and do not count), an `else` block counts as a level, `[own]` 4 | heuristic |
 | Excess Arguments | lizard parameter count, `[own]` more than 4 | heuristic |
 | Large file, Overall Code Complexity | code lines `[own]` 1000 (alert 5000), mean complexity `[own]` 4 | heuristic |
 | Code Duplication | functions of at least 10 code lines whose token structure is at least 85 % similar to a sibling in the same file | proxy |
@@ -83,7 +83,7 @@ Aggregation is by **lines of code**, not by file count: a 5000-line file weighs 
 
 ## Limits
 
-- Languages are the ones in `EXT` in the script (lizard knows more; add the extensions there). The nesting scanner counts braces, so for Python and Ruby the nesting depth is not measured and Nested Complexity is skipped (the report says so). The detectors were developed on Java and JavaScript; check another language against a few files you know before trusting it.
+- Languages are the ones in `EXT` in the script (lizard knows more; add the extensions there). The nesting scanner counts braces, so for Python and Ruby the nesting depth is not measured and Nested Complexity is skipped (the report says so). The detectors were developed on Java and JavaScript and checked on a C# (ASP.NET Core) backend against `lizard`; check another language against a few files you know before trusting it. The default `scope.exclude` leaves out .NET test projects (`*.Tests/`), `bin/`, `obj/` and generated `*.Designer.cs`/`*.g.cs`.
 - Brain Method, Brain Class and Code Duplication are proxies; the weights are our decisions and have not been validated; look at the distribution on your own codebase.
 - The nesting scanner is not a parser. It is tolerant of comments, strings and braceless bodies but can be wrong on regex literals and unusual constructs.
 - Test code is out of scope for this version.
