@@ -84,6 +84,10 @@ def read_texts(repo, cfg):
             texts[f] = p.read_text(errors="replace")
         except OSError:
             continue
+    for f, t in texts.items():                            # spans a profile marks as not to be read (C# doc comments: the compiler checks their cref)
+        name = eco.ecosystem_of(f, active)
+        if name and eco.ECOSYSTEMS[name].get("blank"):
+            texts[f] = eco.ECOSYSTEMS[name]["blank"].sub(lambda m: re.sub(r"[^\n]", " ", m.group(0)), t)   # offsets and lines stay
     return texts, skipped, active
 
 
@@ -220,9 +224,20 @@ def routes(texts, active, mappings, cfg):
         name = eco.ecosystem_of(f, active)
         if not name or any(x.search(f) for x in skip):
             continue
-        for rx in eco.ECOSYSTEMS[name]["routes"]:
+        profile = eco.ECOSYSTEMS[name]
+        prefix = ""
+        if profile.get("route_prefix"):                   # ASP.NET Core: a method's route is relative to the [Route] on its class
+            m = profile["route_prefix"].search(t)
+            prefix = m.group("url").strip("/") if m else ""
+        for rx in profile["routes"]:
             for m in rx.finditer(t):
-                url = re.split(r"[<:{*(\[]", m.group("url"))[0]
+                url = m.group("url")
+                if profile.get("route_prefix") and m.group(0).lstrip("[ \t").startswith("Http") and not url.startswith(("/", "~/")):
+                    url = f"{prefix}/{url}" if prefix else url
+                url = url.lstrip("~")
+                if "[controller]" in url:                 # ASP.NET Core token: the controller class name without its suffix
+                    url = url.replace("[controller]", re.sub(r"Controller$", "", Path(f).stem).lower())
+                url = re.split(r"[<:{*(\[]", url)[0]
                 if url:
                     mappings[f].add(url)
                     declared.add(url.strip("/"))
@@ -302,14 +317,16 @@ def tables(texts, edges, cfg, report):
         return
     alt = "|".join(re.escape(n) for n in sorted(names, key=len, reverse=True))
     ctx = re.compile(rf'\b(?:{c["context"]})\s+(?:\w+\.)?"?({alt})\b', re.I)
-    annot = re.compile(rf"""(?:@Table\s*\(\s*name\s*=|\btable\s*=|\b__tablename__\s*=|\bdb_table\s*=|\btable_name\s*=|\$table\s*=)\s*["']({alt})["']""", re.I)
+    annot = re.compile(rf"""(?:@Table\s*\(\s*name\s*=|\[Table\s*\(|\.ToTable\s*\(|\btable\s*=|\b__tablename__\s*=|\bdb_table\s*=|\btable_name\s*=|\$table\s*=)\s*@?["']({alt})["']""", re.I)
+    extra = [re.compile(x.replace("{tables}", f"(?:{alt})")) for x in c.get("name_patterns", [])]   # repository-specific: group 1 is the table
     for f, t in texts.items():
         if f in definers:
             continue                                      # definitions, not uses
         hits = {}
-        for rx in (ctx, annot):
+        for rx in (ctx, annot, *extra):
             for m in rx.finditer(t):
-                hits.setdefault(m.group(1).lower(), [line_of(t, m.start()), 0])[1] += 1
+                if m.group(1).lower() in names:           # a name_pattern may capture more than the known tables
+                    hits.setdefault(m.group(1).lower(), [line_of(t, m.start()), 0])[1] += 1
         for n, (line, k) in hits.items():
             edges.add(f, f"table:{n}", "data-table", "structure", "heuristic", f"SQL or mapping names `{n}` (line {line})", k)
 
@@ -395,7 +412,7 @@ def lookups(texts, ids, edges, cfg, report, classes):
 def dynamic_sites(texts, active, edges, cfg):
     """Names built or looked up at run time, outside Java: the call and its argument are not a plain string literal."""
     literal_arg = re.compile(r"""^\s*(?:[rbuf]?"[^"]*"|[rbuf]?'[^']*'|:\w+|`[^`$]*`)\s*(?:[,)]|$)""")
-    resolvable = re.compile(r"(?:File\.|__dir__|__FILE__|__dirname|dirname\(|path\.(?:join|resolve)|\$this\b|\bstatic\b|\bself\b)")
+    resolvable = re.compile(r"(?:File\.|__dir__|__FILE__|__dirname|dirname\(|path\.(?:join|resolve)|\$this\b|\bstatic\b|\bself\b|^(?:nameof|typeof)\()")
     skip = [re.compile(x) for x in cfg["dynamic_lookups"].get("ignore_sources", [])]
     for f, t in texts.items():
         name = eco.ecosystem_of(f, active)

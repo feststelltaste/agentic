@@ -51,7 +51,7 @@ def list_files(repo, cfg):
 # ---------------------------------------------------------------- nesting depth
 
 TOK = re.compile(r'//[^\n]*|/\*.*?\*/|"(?:\\.|[^"\\\n])*"|\'(?:\\.|[^\'\\\n])*\'|`[^`]*`|[A-Za-z_$][\w$]*|[{}();]', re.S)
-CONDS = ("if", "for", "while", "switch", "do", "catch")
+CONDS = ("if", "for", "foreach", "while", "switch", "do", "catch")   # foreach: C# and PHP; using, lock and fixed blocks are scopes, not control flow
 
 
 def nesting_depth(body):

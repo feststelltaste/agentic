@@ -73,7 +73,10 @@ scope:
   languages: auto            # auto = every language the script knows (see EXT in fitness.py); or a list such as [java, typescript]
   exclude:                   # regular expressions on repo-relative paths
     - '(^|/)(target|build|dist|out|vendor|node_modules|\.venv|venv|__pycache__)/'
-    - '(^|/)(src/test|tests?|__tests__)/'
+    - '(?i)(^|/)(src/test|tests?|__tests__)/'
+    - '(^|/)[\w.]*\.(Tests?|Specs?|IntegrationTests)/'   # .NET test projects (Backend.Tests/)
+    - '(^|/)(bin|obj)/'                                 # .NET build output
+    - '\.(Designer|g|g\.i)\.cs$'                       # generated C# (designers, source generators)
     - '(^|/)generated'
     - '/gen/'
     - '\.min\.js$'
